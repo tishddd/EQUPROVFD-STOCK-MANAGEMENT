@@ -1,20 +1,20 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Device;
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
-class DeviceController extends Controller
+class OfficeController extends Controller
 {
     // =============================Device Method==========================================
     public function index()
     {
         try {
-            $devices = Device::all();
-            return $this->successResponse('Devices retrieved successfully', ['devices' => $devices]);
+            $office = Office::all();
+            return $this->successResponse('Office retrieved successfully', ['officies' => $office]);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -25,10 +25,10 @@ class DeviceController extends Controller
     public function show($id)
     {
         try {
-            $device = Device::findOrFail($id);
-            return $this->successResponse('Device retrieved successfully', ['device' => $device]);
+            $office = Office::findOrFail($id);
+            return $this->successResponse('DeviceIssue retrieved successfully', ['office' => $office]);
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('office not found', $id);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -40,8 +40,8 @@ class DeviceController extends Controller
     {
         try {
             $validated = $this->validateDevice($request);
-            $device = Device::create($validated);
-            return $this->successResponse('Device added successfully', ['device' => $device], 201);
+            $office = Office::create($validated);
+            return $this->successResponse(' Office added successfully', ['office' => $office], 201);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
         } catch (QueryException $e) {
@@ -55,13 +55,13 @@ class DeviceController extends Controller
     {
         try {
             $validated = $this->validateDevice($request, $id);
-            $device = Device::findOrFail($id);
-            $device->update($validated);
-            return $this->successResponse('Device updated successfully', ['device' => $device]);
+            $office = Office::findOrFail($id);
+            $office->update($validated);
+            return $this->successResponse('Office updated successfully', ['office' => $office]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('Office not found', $id);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -72,11 +72,11 @@ class DeviceController extends Controller
     public function destroy($id)
     {
         try {
-            $device = Device::findOrFail($id);
-            $device->delete();
-            return $this->successResponse('Device deleted successfully');
+            $office = Office::findOrFail($id);
+            $office->delete();
+            return $this->successResponse('Office deleted successfully');
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('Office not found', $id);
         } catch (\Exception $e) {
             return $this->unexpectedErrorResponse($e);
         }
@@ -93,14 +93,11 @@ class DeviceController extends Controller
     private function validateDevice(Request $request, $id = null)
     {
         return $request->validate([
-            'item_name' => 'sometimes|string|max:255',
-            'model_number' => 'sometimes|string|max:255',
-            'serial_number' => 'sometimes|string|max:255|unique:devices,serial_number,' . $id,
-            'status' => 'nullable|in:in_office,sold,damaged',
-            'office_id' => 'nullable|exists:offices,id',
-            'employee_id' => 'nullable|exists:users,id',
+            'name' => 'sometimes|string|max:255',
+            'region' => 'sometimes|string|max:255',
         ]);
     }
+    
 
     private function successResponse($message, $data = [], $status = 200)
     {
@@ -109,7 +106,7 @@ class DeviceController extends Controller
 
     private function notFoundResponse($message, $id)
     {
-        return response()->json(['error' => $message, 'message' => "No device found with ID: $id"], 404);
+        return response()->json(['error' => $message, 'message' => "Office not found with ID: $id"], 404);
     }
 
     private function validationErrorResponse(ValidationException $e)

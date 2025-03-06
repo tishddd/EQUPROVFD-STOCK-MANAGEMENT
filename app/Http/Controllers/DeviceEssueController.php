@@ -1,20 +1,20 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Device;
+use App\Models\DeviceIssue;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 
-class DeviceController extends Controller
+class DeviceEssueController extends Controller
 {
     // =============================Device Method==========================================
     public function index()
     {
         try {
-            $devices = Device::all();
-            return $this->successResponse('Devices retrieved successfully', ['devices' => $devices]);
+            $devicesIssue = DeviceIssue::all();
+            return $this->successResponse('DevicesEssue retrieved successfully', ['deviceIssues' => $devicesIssue]);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -25,10 +25,10 @@ class DeviceController extends Controller
     public function show($id)
     {
         try {
-            $device = Device::findOrFail($id);
-            return $this->successResponse('Device retrieved successfully', ['device' => $device]);
+            $devicesIssue = DeviceIssue::findOrFail($id);
+            return $this->successResponse('DeviceIssue retrieved successfully', ['deviceIssue' => $devicesIssue]);
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('DeviceIssue not found', $id);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -40,8 +40,8 @@ class DeviceController extends Controller
     {
         try {
             $validated = $this->validateDevice($request);
-            $device = Device::create($validated);
-            return $this->successResponse('Device added successfully', ['device' => $device], 201);
+            $devicesIssue = DeviceIssue::create($validated);
+            return $this->successResponse('Device issue added successfully', ['devicesIssue' => $devicesIssue], 201);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
         } catch (QueryException $e) {
@@ -55,13 +55,13 @@ class DeviceController extends Controller
     {
         try {
             $validated = $this->validateDevice($request, $id);
-            $device = Device::findOrFail($id);
-            $device->update($validated);
-            return $this->successResponse('Device updated successfully', ['device' => $device]);
+            $devicesIssue = DeviceIssue::findOrFail($id);
+            $devicesIssue->update($validated);
+            return $this->successResponse('Issue on The Device updated successfully', ['devicesIssue' => $devicesIssue]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('DeviceIssue not found', $id);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
@@ -72,11 +72,11 @@ class DeviceController extends Controller
     public function destroy($id)
     {
         try {
-            $device = Device::findOrFail($id);
-            $device->delete();
-            return $this->successResponse('Device deleted successfully');
+            $devicesIssue = DeviceIssue::findOrFail($id);
+            $devicesIssue->delete();
+            return $this->successResponse('DeviceIssue deleted successfully');
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('DeviceIssue not found', $id);
         } catch (\Exception $e) {
             return $this->unexpectedErrorResponse($e);
         }
@@ -93,14 +93,14 @@ class DeviceController extends Controller
     private function validateDevice(Request $request, $id = null)
     {
         return $request->validate([
-            'item_name' => 'sometimes|string|max:255',
-            'model_number' => 'sometimes|string|max:255',
-            'serial_number' => 'sometimes|string|max:255|unique:devices,serial_number,' . $id,
-            'status' => 'nullable|in:in_office,sold,damaged',
-            'office_id' => 'nullable|exists:offices,id',
-            'employee_id' => 'nullable|exists:users,id',
+            'device_id' => 'sometimes|exists:devices,id',
+            'issue_type' => 'sometimes|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'sometimes|in:pending,repaired,irreparable',
+            'reported_at' => 'sometimes|date',
         ]);
     }
+    
 
     private function successResponse($message, $data = [], $status = 200)
     {
@@ -109,7 +109,7 @@ class DeviceController extends Controller
 
     private function notFoundResponse($message, $id)
     {
-        return response()->json(['error' => $message, 'message' => "No device found with ID: $id"], 404);
+        return response()->json(['error' => $message, 'message' => "No device issue found with ID: $id"], 404);
     }
 
     private function validationErrorResponse(ValidationException $e)
