@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [ // Ensure 'api' guard is defined here
+            'driver' => 'jwt',  // Use 'jwt' instead of 'token'
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*
