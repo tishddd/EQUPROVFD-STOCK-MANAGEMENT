@@ -1,0 +1,79 @@
+﻿@import (less) url('../fonts/MaterialDesign/css/materialdesignicons.css');
+@import (less) url('io7Switch.css');
+
+html, body {
+    height: 100vh;
+}
+
+body {
+    padding-top: 56px;
+    overflow: hidden;
+}
+
+header {
+    .dropdown {
+        .dropdown-toggle {
+            &::after {
+                display: none;
+            }
+        }
+    }
+}
+
+.sidebar {
+    width: 250px;
+    margin-left: -250px;
+    transition: margin 0.2s ease;
+
+    &.open {
+        margin-left: 0;
+    }
+
+    [data-toggle="collapse"] {
+        &:not(.collapsed) {
+            .mdi:last-child {
+                &::before {
+                    content: "";
+                }
+            }
+        }
+    }
+}
+
+.aside-menu {
+    width: 350px;
+    margin-right: -350px;
+    transition: margin 0.2s ease;
+
+    &.open {
+        margin-right: 0;
+    }
+}
+
+.main {
+    position: relative;
+
+    .content {
+        position: absolute;
+        top: 49px;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar, .aside-menu {
+        position: fixed;
+        top: 57px;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .aside-menu {
+        right: 0;
+        left:auto;
+    }
+}
