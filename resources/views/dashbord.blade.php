@@ -57,39 +57,41 @@
             </span>
 
             <div class="dropdown position-relative">
-                <img src="http://via.placeholder.com/40x40" alt="user" class="rounded-circle mx-4 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                <p class="mb-0 " style="margin-left: 10px;">Muuminimwinyi@equprovfd.co.tz</p>
+                <div class="dropdown-menu dropdown-menu-right shadow-sm py-0" aria-labelledby="dropdownMenuButton">
 
-                <div class="dropdown-menu py-0" aria-labelledby="dropdownMenuButton">
                     <h6 class="dropdown-header bg-primary text-white text-center">Account</h6>
-                    <a class="dropdown-item d-flex align-items-center px-2" href="#">
-                        <span class="mdi mdi-bell-outline mr-1"></span>
-                        update
+
+                    <a class="dropdown-item d-flex align-items-center px-3" href="#">
+                        <span class="mdi mdi-bell-outline mr-2"></span> Update
                         <span class="badge badge-info ml-auto">3</span>
                     </a>
-                    <div class="dropdown-divider m-0"></div>
-                    <a class="dropdown-item d-flex align-items-center px-2" href="#">
-                        <span class="mdi mdi-message-outline mr-1"></span>
-                        message
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item d-flex align-items-center px-3" href="#">
+                        <span class="mdi mdi-message-outline mr-2"></span> Message
                         <span class="badge badge-info ml-auto">5</span>
                     </a>
-                    <div class="dropdown-divider m-0"></div>
-                    <a class="dropdown-item d-flex align-items-center px-2" href="#">
-                        <span class="mdi mdi-format-list-bulleted mr-1"></span>
-                        tasks
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item d-flex align-items-center px-3" href="#">
+                        <span class="mdi mdi-format-list-bulleted mr-2"></span> Tasks
                         <span class="badge badge-info ml-auto">10</span>
                     </a>
-                    <h6 class="dropdown-header bg-primary text-white text-center">settings</h6>
-                    <a class="dropdown-item d-flex align-items-center px-2" href="#">
-                        <span class="mdi mdi-account mr-1"></span>
-                        profile
+
+                    <h6 class="dropdown-header bg-primary text-white text-center">Settings</h6>
+
+                    <a class="dropdown-item d-flex align-items-center px-3" href="#">
+                        <span class="mdi mdi-account mr-2"></span> Profile
                     </a>
-                    <div class="dropdown-divider m-0"></div>
-                    <a class="dropdown-item d-flex align-items-center px-2" href="#">
-                        <span class="mdi mdi-power mr-1"></span>
-                        logout
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item d-flex align-items-center px-3 text-danger" href="#">
+                        <span class="mdi mdi-power mr-2"></span> Logout
                     </a>
                 </div>
             </div>
+
 
             <div class="mdi mdi-menu mdi-24px text-muted" id="toggle-aside-menu"></div>
 
@@ -111,19 +113,19 @@
                                 <li>
                                     <a href="#" class="text-dark">
                                         <span class="mdi mdi-food-fork-drink mdi-24px text-info"></span>
-                                        Add New Items
+                                        Add New Stock
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-dark">
+                                        <span class="mdi mdi-food-fork-drink mdi-24px text-info"></span>
+                                        Stock list
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="text-dark">
                                         <span class="mdi mdi-food-off mdi-24px text-info"></span>
                                         Stock report
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-dark">
-                                        <span class="mdi mdi-food-variant mdi-24px text-info"></span>
-                                        Edity Stock
                                     </a>
                                 </li>
                             </ul>
@@ -196,7 +198,7 @@
                 <ol class="breadcrumb rounded-0 bg-white border-bottom m-0">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Library</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    <li class="breadcrumb-item active" class="-block dark text-white p-2" aria-current="page">Open date :: 08 february 2025</li>
                 </ol>
             </nav>
             <div class="content p-3">
@@ -287,9 +289,9 @@
                             <div class="d-flex h5">
                                 <div>
 
-                                1452
-                                <!-- <small class="d-block dark text-white p-2">Thermal Printer Remaining</small>1452 -->
-                                    <small class="d-block dark text-white p-2">POS Remainging </small> 
+                                    1452
+                                    <!-- <small class="d-block dark text-white p-2">Thermal Printer Remaining</small>1452 -->
+                                    <small class="d-block dark text-white p-2">POS Remainging </small>
                                 </div>
 
                                 <div class="dropdown ml-auto">
@@ -312,158 +314,168 @@
                         </div>
                     </div>
                 </div>
-    
+
+                <div class="table-responsive table-responsive-sm mt-3">
+                    <table class="table table-sm table-hover border">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">
+
+                                </th>
+                                <th>Id</th>
+                                <th>Item Name</th>
+                                <th>Model Number</th>
+                                <th>Serial Number</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Sold price</th>
+                                <th>Office</th>
+                                <th>Employee</th>
+                                <th>Customer Tin</th>
+                                <th>Created At</th>
+                                <th>Sold date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="align-middle text-center">
+                                </th>
+                                <td class="align-middle">1</td>
+                                <td class="align-middle">Pos</td>
+                                <td class="align-middle">H1OS</td>
+                                <td class="align-middle">H10S755248T0986</td>
+                                <td class="align-middle" style="color: red;">In Office</td>
+                                <td class="align-middle">550000</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">Mwanza</td>
+                                <td class="align-middle">france</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">2023-07-10</td>
+                                <td class="align-middle">-</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">
+                                </th>
+                                <td class="align-middle">2</td>
+                                <td class="align-middle">Thermo Printer</td>
+                                <td class="align-middle">OCPP-M06</td>
+                                <td class="align-middle">OCM062243100994</td>
+                                <td class="align-middle" style="color: green;">Sold</td>
+                                <td class="align-middle">150000</td>
+                                <td class="align-middle">130000</td>
+                                <td class="align-middle">Mwanza</td>
+                                <td class="align-middle">france</td>
+                                <td class="align-middle">125381382</td>
+                                <td class="align-middle">2023-07-10</td>
+                                <td class="align-middle">2024-01-15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             </div>
         </main>
         <aside class="aside-menu bg-white border-left open d-flex flex-column">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active rounded-0 border-left-0" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                        <span class="mdi mdi-settings"></span>
-                    </a>
-                    <a class="nav-item nav-link rounded-0" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
-                        <span class="mdi mdi-format-list-bulleted"></span>
-                    </a>
-                    <a class="nav-item nav-link rounded-0" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
-                        <span class="mdi mdi-comment-processing"></span>
-                    </a>
-                </div>
-            </nav>
+
+
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show p-3 active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">Check this checkbox</label>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead class="table-success">
+                                <tr>
+                                    <th colspan="3">STOCK QTY / REGION (in office)</th>
+                                </tr>
+                                <tr class="table-secondary">
+                                    <th>Region</th>
+                                    <th>POS</th>
+                                    <th>Thermo Printer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dar es Salaam</td>
+                                    <td>33</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>Mwanza</td>
+                                    <td>2</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>Kahama</td>
+                                    <td>4</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Dodoma</td>
+                                    <td>5</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>Mbeya</td>
+                                    <td>2</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>Ifakara</td>
+                                    <td>12</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr>
+                                    <td>Arusha</td>
+                                    <td>0</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>Agent Segerea</td>
+                                    <td>0</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Iringa</td>
+                                    <td>0</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>Mtwara</td>
+                                    <td>0</td>
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-warning">
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td><strong>58</strong></td>
+                                    <td><strong>91</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <hr />
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2">Check this checkbox</label>
-                    </div>
-                    <hr />
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                        <label class="custom-control-label" for="customRadio1">Toggle this custom radio</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                        <label class="custom-control-label" for="customRadio2">Or toggle this other custom radio</label>
-                    </div>
-                    <hr />
-                    <div class="d-flex align-items-center">
-                        option 1
-                        <label class="ios7-switch ml-auto h4">
-                            <input type="checkbox" checked>
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        option 2
-                        <label class="ios7-switch ml-auto h4">
-                            <input type="checkbox">
-                            <span></span>
-                        </label>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        option 3
-                        <label class="ios7-switch ml-auto h4">
-                            <input type="checkbox" checked>
-                            <span></span>
-                        </label>
-                    </div>
-                    <hr />
-                    <label for="customRange1">Example range</label>
-                    <input type="range" class="custom-range" id="customRange1">
-                </div>
-                <div class="tab-pane fade p-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <div>
-                        <div class="d-flex justify-content-between text-muted">
-                            <span>title of content</span>
-                            <span class="small">2018/02/15</span>
-                        </div>
-                        <p>
-                            Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                        </p>
-                    </div>
-                    <hr />
-                    <div>
-                        <div class="d-flex justify-content-between text-muted">
-                            <span>title of content</span>
-                            <span class="small">2018/02/15</span>
-                        </div>
-                        <p>
-                            Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                        </p>
-                    </div>
-                    <hr />
-                    <div>
-                        <div class="d-flex justify-content-between text-muted">
-                            <span>title of content</span>
-                            <span class="small">2018/02/15</span>
-                        </div>
-                        <p>
-                            Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                        </p>
-                    </div>
-                    <hr />
-                </div>
-                <div class="tab-pane fade p-2" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="d-flex p-3 border-bottom">
-                        <img src="http://via.placeholder.com/70x70" class="rounded-circle align-self-start mr-2 w-25" />
-                        <div class="w-75">
-                            <small class="text-muted">family Name</small>
-                            <h6 class=" text-truncate font-weight-bold">
-                                Amet, consectetur adipiscing elit.
-                            </h6>
-                            <p class=" small">
-                                Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="d-flex p-3 border-bottom">
-                        <img src="http://via.placeholder.com/70x70" class="rounded-circle align-self-start mr-2 w-25" />
-                        <div class="w-75">
-                            <small class="text-muted">family Name</small>
-                            <h6 class=" text-truncate font-weight-bold">
-                                Amet, consectetur adipiscing elit.
-                            </h6>
-                            <p class=" small">
-                                Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="d-flex p-3 border-bottom">
-                        <img src="http://via.placeholder.com/70x70" class="rounded-circle align-self-start mr-2 w-25" />
-                        <div class="w-75">
-                            <small class="text-muted">family Name</small>
-                            <h6 class=" text-truncate font-weight-bold">
-                                Amet, consectetur adipiscing elit.
-                            </h6>
-                            <p class=" small">
-                                Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.
-                            </p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+
+
+
             <div class="alerts mt-auto">
                 <div class="alert alert-success alert-dismissible fade show mx-2" role="alert">
                     <h5 class="alert-heading">Well done!</h5>
                     <p>
-                        Sapien elit in malesuada semper
+                        Stock is about to close
                     </p>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="alert alert-warning alert-dismissible fade show mx-2" role="alert">
+                <!-- <div class="alert alert-warning alert-dismissible fade show mx-2" role="alert">
                     <strong>Holy guacamole!</strong> You should check in on some of those fields below.
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
+                </div> -->
             </div>
         </aside>
     </div>
