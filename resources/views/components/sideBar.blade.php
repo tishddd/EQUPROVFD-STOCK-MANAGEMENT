@@ -1,4 +1,4 @@
-<div class="sidebar bg-dark open p-4 text-white d-flex flex-column justify-content-between shadow-lg" style="width: 260px; min-height: 100vh;">
+<div class="sidebar bg-dark open p-4 text-white d-flex flex-column justify-content-between shadow-lg" style="width: 260px; min-height: 90vh;">
     <div>
         <h5 class="text-uppercase text-muted font-weight-bold">Dashboard</h5>
         <ul class="list-unstyled mt-4">
@@ -28,7 +28,7 @@
                     </ul>
                 </div>
             </li>
-            
+
             <!-- Sales Report -->
             <!-- <li class="mt-2">
                 <a href="#" class="text-white d-flex align-items-center py-2 rounded">
@@ -83,13 +83,16 @@
                     <span class="mdi mdi-cog mdi-24px text-light mr-2"></span> Settings
                 </a>
             </li>
+
+
         </ul>
     </div>
 
-    <!-- Logout -->
-    <div class="border-top pt-3">
-        <a href="#" class="d-flex align-items-center text-danger font-weight-bold">
-            <span class="mdi mdi-logout mdi-24px mr-2"></span> Log Out
+    <!-- Logout Section -->
+    <div class="mt-auto border-top pt-3">
+        <a href="#" class="d-flex align-items-center text-danger font-weight-bold logout-button">
+            <span class="mdi mdi-logout mdi-25px mr-2"></span> Log Out
         </a>
     </div>
+
 </div>

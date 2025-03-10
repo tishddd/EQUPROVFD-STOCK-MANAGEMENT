@@ -65,9 +65,9 @@
                 </div>
             </div>
             <div class="mt-2">
-                <div class="text-right text-white">25%</div>
+                <div class="text-right text-white">76%</div>
                 <div class="progress" style="height: 3px;">
-                    <div class="progress-bar bg-dark" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-dark" role="progressbar" style="width: 76%;" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
 

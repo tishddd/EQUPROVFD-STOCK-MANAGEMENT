@@ -62,6 +62,6 @@ class AuthController extends Controller
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['error' => 'Token not provided'], 401);
         }
-    }
+    }    
     
 }
