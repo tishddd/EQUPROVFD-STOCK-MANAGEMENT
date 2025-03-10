@@ -12,8 +12,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/admindashbordAssets/css/style.css')}}">
 
-     <!-- Include DataTables CSS -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
     <title>Admin Panel</title>
 
@@ -45,7 +45,7 @@
 
 
                 <!-- Table Section -->
-                <div class="table-responsive table-responsive-sm mt-3">
+                <div class="table-responsive table-responsive-sm" style="margin-top: 10px;">
                     <table id="dataTable" class="table table-sm table-hover border">
                         <thead class="thead-light">
                             <tr>
@@ -67,31 +67,158 @@
                             <tr>
                                 <th class="align-middle text-center">1</th>
                                 <td class="align-middle">Pos</td>
-                                <td class="align-middle">H1OS</td>
-                                <td class="align-middle">H10S755248T0986</td>
-                                <td class="align-middle" style="color: red;">In Office</td>
-                                <td class="align-middle">550,000</td>
+                                <td class="align-middle">XPOS200</td>
+                                <td class="align-middle">XP20087456321</td>
+                                <td class="align-middle" style="color: red;">Maintenance</td>
+                                <td class="align-middle">600,000</td>
                                 <td class="align-middle">-</td>
-                                <td class="align-middle">Mwanza</td>
-                                <td class="align-middle">France</td>
+                                <td class="align-middle">DSM</td>
+                                <td class="align-middle">mucha</td>
                                 <td class="align-middle">-</td>
-                                <td class="align-middle">2023-07-10</td>
+                                <td class="align-middle">2023-08-15</td>
                                 <td class="align-middle">-</td>
                             </tr>
                             <tr>
                                 <th class="align-middle text-center">2</th>
-                                <td class="align-middle">Thermo Printer</td>
-                                <td class="align-middle">OCPP-M06</td>
-                                <td class="align-middle">OCM062243100994</td>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">TPR450</td>
+                                <td class="align-middle">TPR45099874563</td>
                                 <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">150,000</td>
-                                <td class="align-middle">130,000</td>
-                                <td class="align-middle">Mwanza</td>
-                                <td class="align-middle">France</td>
-                                <td class="align-middle">125381382</td>
-                                <td class="align-middle">2023-07-10</td>
-                                <td class="align-middle">2024-01-15</td>
+                                <td class="align-middle">180,000</td>
+                                <td class="align-middle">160,000</td>
+                                <td class="align-middle">Arusha</td>
+                                <td class="align-middle">mwinyi</td>
+                                <td class="align-middle">874596321</td>
+                                <td class="align-middle">2023-09-20</td>
+                                <td class="align-middle">2024-02-10</td>
                             </tr>
+                            <tr>
+                                <th class="align-middle text-center">3</th>
+                                <td class="align-middle">Pos</td>
+                                <td class="align-middle">SPOS500</td>
+                                <td class="align-middle">SP50012547896</td>
+                                <td class="align-middle" style="color: blue;">In Transit</td>
+                                <td class="align-middle">720,000</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">Mwanza</td>
+                                <td class="align-middle">mbida</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">2023-06-25</td>
+                                <td class="align-middle">-</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">4</th>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">LX800</td>
+                                <td class="align-middle">LX80087456987</td>
+                                <td class="align-middle" style="color: green;">Sold</td>
+                                <td class="align-middle">200,000</td>
+                                <td class="align-middle">175,000</td>
+                                <td class="align-middle">Dodoma</td>
+                                <td class="align-middle">Manson</td>
+                                <td class="align-middle">985647321</td>
+                                <td class="align-middle">2023-10-05</td>
+                                <td class="align-middle">2024-03-12</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">5</th>
+                                <td class="align-middle">Pos</td>
+                                <td class="align-middle">P2000</td>
+                                <td class="align-middle">P200032145698</td>
+                                <td class="align-middle" style="color: red;">Damaged</td>
+                                <td class="align-middle">500,000</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">Mbeya</td>
+                                <td class="align-middle">mwinyi</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">2023-05-18</td>
+                                <td class="align-middle">-</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">6</th>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">TR600</td>
+                                <td class="align-middle">TR60045632187</td>
+                                <td class="align-middle" style="color: orange;"> Delivery</td>
+                                <td class="align-middle">190,000</td>
+                                <td class="align-middle">170,000</td>
+                                <td class="align-middle">Tanga</td>
+                                <td class="align-middle">mwinyi</td>
+                                <td class="align-middle">748596321</td>
+                                <td class="align-middle">2023-11-11</td>
+                                <td class="align-middle">2024-04-20</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">7</th>
+                                <td class="align-middle">Pos</td>
+                                <td class="align-middle">XTRA900</td>
+                                <td class="align-middle">X90078541236</td>
+                                <td class="align-middle" style="color: green;">Sold</td>
+                                <td class="align-middle">650,000</td>
+                                <td class="align-middle">600,000</td>
+                                <td class="align-middle">Zanzibar</td>
+                                <td class="align-middle">france</td>
+                                <td class="align-middle">789654123</td>
+                                <td class="align-middle">2023-12-01</td>
+                                <td class="align-middle">2024-06-05</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">8</th>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">THX550</td>
+                                <td class="align-middle">THX55098745612</td>
+                                <td class="align-middle" style="color: blue;"> Pickup</td>
+                                <td class="align-middle">210,000</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">Kigoma</td>
+                                <td class="align-middle">james</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">2023-07-22</td>
+                                <td class="align-middle">-</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">9</th>
+                                <td class="align-middle">Pos</td>
+                                <td class="align-middle">QPOS300</td>
+                                <td class="align-middle">QPOS30015975364</td>
+                                <td class="align-middle" style="color: red;">Under Repair</td>
+                                <td class="align-middle">580,000</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">Shinyanga</td>
+                                <td class="align-middle">kaligo</td>
+                                <td class="align-middle">-</td>
+                                <td class="align-middle">2023-04-12</td>
+                                <td class="align-middle">-</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">10</th>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">TXP700</td>
+                                <td class="align-middle">TXP70075321469</td>
+                                <td class="align-middle" style="color: green;">Sold</td>
+                                <td class="align-middle">220,000</td>
+                                <td class="align-middle">200,000</td>
+                                <td class="align-middle">Morogoro</td>
+                                <td class="align-middle">salome</td>
+                                <td class="align-middle">852369741</td>
+                                <td class="align-middle">2023-03-05</td>
+                                <td class="align-middle">2024-05-10</td>
+                            </tr>
+                            <tr>
+                                <th class="align-middle text-center">11</th>
+                                <td class="align-middle">Printer</td>
+                                <td class="align-middle">TXP700</td>
+                                <td class="align-middle">TXP70075321469</td>
+                                <td class="align-middle" style="color: green;">Sold</td>
+                                <td class="align-middle">220,000</td>
+                                <td class="align-middle">200,000</td>
+                                <td class="align-middle">Morogoro</td>
+                                <td class="align-middle">salome</td>
+                                <td class="align-middle">852369741</td>
+                                <td class="align-middle">2023-03-05</td>
+                                <td class="align-middle">2024-05-10</td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

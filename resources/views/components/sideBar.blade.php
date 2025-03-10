@@ -46,11 +46,6 @@
                     <ul class="list-unstyled py-2">
                         <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
-                                <span class="mdi mdi-truck mdi-18px text-success mr-2"></span> Dispatch
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-clipboard-text mdi-18px text-success mr-2"></span> Transfers
                             </a>
                         </li>
@@ -66,7 +61,7 @@
             <!-- Revenue Report -->
             <li class="mt-2">
                 <a href="#" class="text-white d-flex align-items-center py-2 rounded">
-                    <span class="mdi mdi-finance mdi-24px text-info mr-2"></span> Revenue Report
+                    <span class="mdi mdi-finance mdi-24px text-info mr-2"></span>  Report
                 </a>
             </li>
 
