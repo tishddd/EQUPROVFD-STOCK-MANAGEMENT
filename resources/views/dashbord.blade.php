@@ -43,188 +43,76 @@
                 <!-- =======dashBoardPanel====== -->
                 @include('components.dashBoardPanel')
 
+                <div>
 
-                <!-- Table Section -->
-                <div class="table-responsive table-responsive-sm" style="margin-top: 10px;">
-                    <table id="dataTable" class="table table-sm table-hover border">
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Item Name</th>
-                                <th>Model Number</th>
-                                <th>Serial Number</th>
-                                <th>Status</th>
-                                <th>Price</th>
-                                <th>Sold Price</th>
-                                <th>Office</th>
-                                <th>Employee</th>
-                                <th>Customer Tin</th>
-                                <th>Created At</th>
-                                <th>Sold Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="align-middle text-center">1</th>
-                                <td class="align-middle">Pos</td>
-                                <td class="align-middle">XPOS200</td>
-                                <td class="align-middle">XP20087456321</td>
-                                <td class="align-middle" style="color: red;">Maintenance</td>
-                                <td class="align-middle">600,000</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">DSM</td>
-                                <td class="align-middle">mucha</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">2023-08-15</td>
-                                <td class="align-middle">-</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">2</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">TPR450</td>
-                                <td class="align-middle">TPR45099874563</td>
-                                <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">180,000</td>
-                                <td class="align-middle">160,000</td>
-                                <td class="align-middle">Arusha</td>
-                                <td class="align-middle">mwinyi</td>
-                                <td class="align-middle">874596321</td>
-                                <td class="align-middle">2023-09-20</td>
-                                <td class="align-middle">2024-02-10</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">3</th>
-                                <td class="align-middle">Pos</td>
-                                <td class="align-middle">SPOS500</td>
-                                <td class="align-middle">SP50012547896</td>
-                                <td class="align-middle" style="color: blue;">In Transit</td>
-                                <td class="align-middle">720,000</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">Mwanza</td>
-                                <td class="align-middle">mbida</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">2023-06-25</td>
-                                <td class="align-middle">-</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">4</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">LX800</td>
-                                <td class="align-middle">LX80087456987</td>
-                                <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">200,000</td>
-                                <td class="align-middle">175,000</td>
-                                <td class="align-middle">Dodoma</td>
-                                <td class="align-middle">Manson</td>
-                                <td class="align-middle">985647321</td>
-                                <td class="align-middle">2023-10-05</td>
-                                <td class="align-middle">2024-03-12</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">5</th>
-                                <td class="align-middle">Pos</td>
-                                <td class="align-middle">P2000</td>
-                                <td class="align-middle">P200032145698</td>
-                                <td class="align-middle" style="color: red;">Damaged</td>
-                                <td class="align-middle">500,000</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">Mbeya</td>
-                                <td class="align-middle">mwinyi</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">2023-05-18</td>
-                                <td class="align-middle">-</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">6</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">TR600</td>
-                                <td class="align-middle">TR60045632187</td>
-                                <td class="align-middle" style="color: orange;"> Delivery</td>
-                                <td class="align-middle">190,000</td>
-                                <td class="align-middle">170,000</td>
-                                <td class="align-middle">Tanga</td>
-                                <td class="align-middle">mwinyi</td>
-                                <td class="align-middle">748596321</td>
-                                <td class="align-middle">2023-11-11</td>
-                                <td class="align-middle">2024-04-20</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">7</th>
-                                <td class="align-middle">Pos</td>
-                                <td class="align-middle">XTRA900</td>
-                                <td class="align-middle">X90078541236</td>
-                                <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">650,000</td>
-                                <td class="align-middle">600,000</td>
-                                <td class="align-middle">Zanzibar</td>
-                                <td class="align-middle">france</td>
-                                <td class="align-middle">789654123</td>
-                                <td class="align-middle">2023-12-01</td>
-                                <td class="align-middle">2024-06-05</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">8</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">THX550</td>
-                                <td class="align-middle">THX55098745612</td>
-                                <td class="align-middle" style="color: blue;"> Pickup</td>
-                                <td class="align-middle">210,000</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">Kigoma</td>
-                                <td class="align-middle">james</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">2023-07-22</td>
-                                <td class="align-middle">-</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">9</th>
-                                <td class="align-middle">Pos</td>
-                                <td class="align-middle">QPOS300</td>
-                                <td class="align-middle">QPOS30015975364</td>
-                                <td class="align-middle" style="color: red;">Under Repair</td>
-                                <td class="align-middle">580,000</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">Shinyanga</td>
-                                <td class="align-middle">kaligo</td>
-                                <td class="align-middle">-</td>
-                                <td class="align-middle">2023-04-12</td>
-                                <td class="align-middle">-</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">10</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">TXP700</td>
-                                <td class="align-middle">TXP70075321469</td>
-                                <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">220,000</td>
-                                <td class="align-middle">200,000</td>
-                                <td class="align-middle">Morogoro</td>
-                                <td class="align-middle">salome</td>
-                                <td class="align-middle">852369741</td>
-                                <td class="align-middle">2023-03-05</td>
-                                <td class="align-middle">2024-05-10</td>
-                            </tr>
-                            <tr>
-                                <th class="align-middle text-center">11</th>
-                                <td class="align-middle">Printer</td>
-                                <td class="align-middle">TXP700</td>
-                                <td class="align-middle">TXP70075321469</td>
-                                <td class="align-middle" style="color: green;">Sold</td>
-                                <td class="align-middle">220,000</td>
-                                <td class="align-middle">200,000</td>
-                                <td class="align-middle">Morogoro</td>
-                                <td class="align-middle">salome</td>
-                                <td class="align-middle">852369741</td>
-                                <td class="align-middle">2023-03-05</td>
-                                <td class="align-middle">2024-05-10</td>
-                            </tr>
+                    <!-- Add Device Button & Table -->
+                    <div class="d-flex justify-content-between mb-2" style="margin-top: 20px;" >
+                        <button id="addDeviceBtn" class="btn btn-info text-white" >
+                            ➕ Add New Device
+                        </button>
+                    </div>
 
-                        </tbody>
-                    </table>
+
+                    <div class="table-container">
+                        <table id="dataTable" class="table table-sm table-hover border">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Item Name</th>
+                                    <th>Model Number</th>
+                                    <th>Serial Number</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                    <th>Sold Price</th>
+                                    <th>Office</th>
+                                    <th>Employee</th>
+                                    <th>Customer Tin</th>
+                                    <th>Created At</th>
+                                    <th>Sold Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Data will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Add Device Modal -->
+                    <div class="modal fade" id="addDeviceModal" tabindex="-1" aria-labelledby="addDeviceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addDeviceModalLabel">Add New Device</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addDeviceForm">
+                                        <div class="mb-3">
+                                            <label for="item_name" class="form-label">Item Name</label>
+                                            <input type="text" class="form-control" id="item_name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="model_number" class="form-label">Model Number</label>
+                                            <input type="text" class="form-control" id="model_number" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="serial_number" class="form-label">Serial Number</label>
+                                            <input type="text" class="form-control" id="serial_number" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">Price</label>
+                                            <input type="number" class="form-control" id="price" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </div>
-
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-            </div>
         </main>
         @include('components.sideManue')
     </div>
@@ -388,14 +276,154 @@
     <!-- Initialize DataTables -->
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable({
-                paging: true, // Enable pagination
-                searching: true, // Enable search bar
-                ordering: false, // Enable column sorting
-                responsive: true // Enable responsive mode
+            fetchDevices(); // Initial call
+
+            // Polling: Fetch data every 5 seconds
+            setInterval(fetchDevices, 5000);
+
+            function fetchDevices() {
+                let token = localStorage.getItem('jwt_token'); // Retrieve JWT token
+
+                if (!token) {
+                    console.log("No token found, redirecting to login...");
+                    window.location.href = "/login";
+                    return;
+                }
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/devices",
+                    type: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    success: function(response) {
+                        let devices = response.devices;
+                        let tableBody = $("#tableBody");
+                        tableBody.empty(); // Clear existing rows
+
+                        $.each(devices, function(index, device) {
+                            let statusColor = getStatusColor(device.status);
+
+                            let row = `<tr>
+                        <th class="align-middle text-center">${index + 1}</th>
+                        <td class="align-middle">${device.item_name}</td>
+                        <td class="align-middle">${device.model_number}</td>
+                        <td class="align-middle">${device.serial_number}</td>
+                        <td class="align-middle" style="color: ${statusColor};">${device.status}</td>
+                        <td class="align-middle">${device.price || '-'}</td>
+                        <td class="align-middle">${device.sold_price || '-'}</td>
+                        <td class="align-middle">${device.office_name}</td>
+                        <td class="align-middle">${device.employee_name}</td>
+                        <td class="align-middle">${device.customer_tin || '-'}</td>
+                        <td class="align-middle">${formatDate(device.created_at)}</td>
+                        <td class="align-middle">${formatDate(device.sold_date)}</td>
+                    </tr>`;
+
+                            tableBody.append(row);
+                        });
+
+                        // Initialize or update DataTable without sorting (removes sort arrows)
+                        if (!$.fn.DataTable.isDataTable("#dataTable")) {
+                            $("#dataTable").DataTable({
+                                paging: true,
+                                searching: true,
+                                ordering: false, // Disables sorting globally (removes arrows)
+                                info: true
+                            });
+
+                            // Move the "Add Device" button before the search box
+                            $(".dataTables_filter").before($("#addDeviceBtn"));
+                        } else {
+                            let dataTable = $("#dataTable").DataTable();
+                            dataTable.clear().rows.add($("#tableBody tr")).draw();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching devices:", xhr.responseText);
+
+                        if (xhr.status === 401) {
+                            console.log("Token expired or invalid, redirecting to login...");
+                            localStorage.removeItem('jwt_token');
+                            window.location.href = '/login';
+                        }
+                    }
+                });
+            }
+
+            function getStatusColor(status) {
+                switch (status.toLowerCase()) {
+                    case "sold":
+                        return "green";
+                    case "maintenance":
+                        return "red";
+                    case "in_office":
+                        return "blue";
+                    case "delivery":
+                        return "orange";
+                    case "damaged":
+                        return "red";
+                    case "under repair":
+                        return "red";
+                    default:
+                        return "black";
+                }
+            }
+
+            function formatDate(isoDate) {
+                if (!isoDate) return '-'; // Handle empty/null dates
+
+                let date = new Date(isoDate);
+                let day = String(date.getDate()).padStart(2, '0');
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let year = date.getFullYear();
+
+                return `${day}-${month}-${year}`;
+            }
+
+            // Open modal when clicking Add Device button
+            $("#addDeviceBtn").click(function() {
+                $("#addDeviceModal").modal("show");
+            });
+
+            // Handle Add Device Form Submission
+            $("#addDeviceForm").submit(function(e) {
+                e.preventDefault();
+
+                let token = localStorage.getItem("jwt_token");
+                if (!token) {
+                    alert("Unauthorized! Please log in.");
+                    return;
+                }
+
+                let newDevice = {
+                    item_name: $("#item_name").val(),
+                    model_number: $("#model_number").val(),
+                    serial_number: $("#serial_number").val(),
+                    price: $("#price").val(),
+                };
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/devices",
+                    type: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    data: JSON.stringify(newDevice),
+                    success: function(response) {
+                        alert("Device added successfully!");
+                        $("#addDeviceModal").modal("hide");
+                        fetchDevices(); // Refresh table
+                    },
+                    error: function(xhr) {
+                        alert("Error adding device: " + xhr.responseText);
+                    }
+                });
             });
         });
     </script>
+
 
 </body>
 

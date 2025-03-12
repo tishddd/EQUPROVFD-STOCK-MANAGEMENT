@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Device;
@@ -13,14 +14,34 @@ class DeviceController extends Controller
     public function index()
     {
         try {
-            $devices = Device::all();
-            return $this->successResponse('Devices retrieved successfully', ['devices' => $devices]);
+            $devices = Device::with(['office', 'employee'])->get()->map(function ($device) {
+                return [
+                    'id'           => $device->id,
+                    'item_name'    => $device->item_name,
+                    'model_number' => $device->model_number,
+                    'serial_number'=> $device->serial_number,
+                    'status'       => $device->status,
+                    'price'        => $device->price,
+                    'sold_price'   => $device->sold_price,
+                    'customer_tin' => $device->customer_tin,
+                    'sold_date'    => $device->sold_date,
+                    'created_at'   => $device->created_at,
+                    'updated_at'   => $device->updated_at,
+                    'office_name'  => $device->office ? $device->office->region : null,  // Get Office Name
+                    'employee_name'=> $device->employee ? $device->employee->name : null  // Get Employee Name
+                ];
+            });
+    
+            return $this->successResponse('Devices retrieved successfully', [
+                'devices' => $devices
+            ]);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
             return $this->unexpectedErrorResponse($e);
         }
     }
+    
 
     public function show($id)
     {
@@ -56,7 +77,16 @@ class DeviceController extends Controller
         try {
             $validated = $this->validateDevice($request, $id);
             $device = Device::findOrFail($id);
-            $device->update($validated);
+
+            // Explicitly assign price if it's present in the request
+            if ($request->has('price')) {
+                $device->price = $request->input('price');
+            }
+
+            // Apply validated data and save
+            $device->fill($validated);
+            $device->save(); // Save explicitly to ensure database updates
+
             return $this->successResponse('Device updated successfully', ['device' => $device]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
@@ -68,6 +98,7 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
+
 
     public function destroy($id)
     {
@@ -93,14 +124,19 @@ class DeviceController extends Controller
     private function validateDevice(Request $request, $id = null)
     {
         return $request->validate([
-            'item_name' => 'sometimes|string|max:255',
-            'model_number' => 'sometimes|string|max:255',
-            'serial_number' => 'sometimes|string|max:255|unique:devices,serial_number,' . $id,
-            'status' => 'nullable|in:in_office,sold,damaged',
-            'office_id' => 'nullable|exists:offices,id',
-            'employee_id' => 'nullable|exists:users,id',
+            'item_name'      => 'sometimes|required|string|max:255',
+            'model_number'   => 'sometimes|required|string|max:255',
+            'serial_number'  => 'sometimes|required|string|max:255|unique:devices,serial_number,' . $id,
+            'status'         => 'sometimes|in:in_office,sold,damaged',
+            'office_id'      => 'nullable|exists:offices,id',
+            'employee_id'    => 'nullable|exists:users,id',
+            'price'          => 'sometimes|numeric|min:0',
+            'sold_price'     => 'nullable|numeric|min:0',
+            'customer_tin'   => 'nullable|string|max:20',
+            'sold_date'      => 'nullable|date',
         ]);
     }
+
 
     private function successResponse($message, $data = [], $status = 200)
     {
@@ -127,4 +163,3 @@ class DeviceController extends Controller
         return response()->json(['error' => 'Something went wrong', 'message' => $e->getMessage()], 500);
     }
 }
-

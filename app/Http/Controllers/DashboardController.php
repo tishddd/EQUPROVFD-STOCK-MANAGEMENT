@@ -27,13 +27,13 @@ class DashboardController extends Controller
 
             // POS & Thermal Printer Statistics
             $posReceived = Device::where('item_name', 'POS')->count();
-            $thermalPrinterReceived = Device::where('item_name', 'THERMAL_PRINTER')->count();
+            $thermalPrinterReceived = Device::where('item_name', 'PRINTER')->count();
             $posSold = Device::where('item_name', 'POS')->where('status', 'sold')->count();
-            $thermalPrinterSold = Device::where('item_name', 'THERMAL_PRINTER')->where('status', 'sold')->count();
+            $thermalPrinterSold = Device::where('item_name', 'PRINTER')->where('status', 'sold')->count();
 
             // Remaining POS & Thermal Printers (NOT sold)
             $posRemain = Device::where('item_name', 'POS')->where('status', '!=', 'sold')->count();
-            $thermalPrinterRemain = Device::where('item_name', 'THERMAL_PRINTER')->where('status', '!=', 'sold')->count();
+            $thermalPrinterRemain = Device::where('item_name', 'PRINTER')->where('status', '!=', 'sold')->count();
 
             return response()->json([
                 'total_devices' => $totalDevices,
@@ -120,7 +120,7 @@ class DashboardController extends Controller
             'o.name as office_name',
             'o.region',
             DB::raw("SUM(CASE WHEN d.item_name = 'POS' THEN 1 ELSE 0 END) as pos_count"),
-            DB::raw("SUM(CASE WHEN d.item_name = 'THERMAL_PRINTER' THEN 1 ELSE 0 END) as thermal_printer_count")
+            DB::raw("SUM(CASE WHEN d.item_name = 'PRINTER' THEN 1 ELSE 0 END) as printer_count")
         )
         ->groupBy('o.id', 'o.name', 'o.region')
         ->orderBy('o.id')
@@ -138,7 +138,7 @@ public function getTotalDeviceCounts()
         ->where('status', 'in_office')
         ->selectRaw("
             SUM(CASE WHEN item_name = 'POS' THEN 1 ELSE 0 END) as total_pos,
-            SUM(CASE WHEN item_name = 'THERMAL_PRINTER' THEN 1 ELSE 0 END) as total_thermal_printer
+            SUM(CASE WHEN item_name = 'PRINTER' THEN 1 ELSE 0 END) as total_printer
         ")
         ->first();
 

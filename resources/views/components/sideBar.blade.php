@@ -61,7 +61,7 @@
             <!-- Revenue Report -->
             <li class="mt-2">
                 <a href="#" class="text-white d-flex align-items-center py-2 rounded">
-                    <span class="mdi mdi-finance mdi-24px text-info mr-2"></span>  Report
+                    <span class="mdi mdi-finance mdi-24px text-info mr-2"></span> Revenue Report
                 </a>
             </li>
 
