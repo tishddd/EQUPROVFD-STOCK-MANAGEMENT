@@ -20,4 +20,9 @@ class PageController extends Controller
     {
         return view('dashbord');
     }
+
+    public function addStock()
+    {
+        return view('pages.addnewStock');
+    }
 }

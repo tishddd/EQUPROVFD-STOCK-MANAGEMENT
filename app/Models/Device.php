@@ -33,4 +33,9 @@ class Device extends Model
     {
         return $this->belongsTo(User::class, 'employee_id');
     }
+
+    public function batch() {
+        return $this->belongsTo(Batch::class);
+    }
+    
 }

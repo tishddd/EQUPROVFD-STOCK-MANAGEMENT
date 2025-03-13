@@ -9,3 +9,4 @@ Route::get('/', [PageController::class, 'index']);
 // Route for the dashboard
 Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 Route::get('/login', [PageController::class, 'login']);
+Route::get('/add-stock', [PageController::class, 'addStock'])->name('addStock');

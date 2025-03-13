@@ -11,9 +11,11 @@
                 <div class="collapse bg-light rounded mt-2 px-3" id="collapseStock">
                     <ul class="list-unstyled py-2">
                         <li>
-                            <a href="#" class="text-dark d-flex align-items-center py-1">
+                            <a href="{{ route('addStock') }}" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-plus-box mdi-18px text-primary mr-2"></span> Add New Stock
                             </a>
+
+
                         </li>
                         <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
