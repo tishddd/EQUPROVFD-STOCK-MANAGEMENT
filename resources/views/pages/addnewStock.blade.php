@@ -58,9 +58,8 @@
                                     <th>Price</th>
                                     <th>Sold Price</th>
                                     <th>Office</th>
-                                    <th>Employee</th>
+                                    <th>Sales_officer</th>
                                     <th>Customer Tin</th>
-                                    <th>Created At</th>
                                     <th>Sold Date</th>
                                 </tr>
                             </thead>
@@ -125,3 +124,297 @@
 
     <!-- Bootstrap JS -->
     <script src="{{ asset('assets/admindashbordAssets/bootstrap-4.1.1/dist/js/bootstrap.min.js') }}"></script>
+
+      <!-- ============================== get user auth token ========================================= -->
+      <script>
+        // Function to check for expired token and redirect to login page
+        function checkTokenExpiration() {
+            let token = localStorage.getItem('jwt_token'); // Retrieve JWT token from localStorage
+            console.log("Token found: ", token); // Debugging log
+
+            if (!token) {
+                console.log("Token not found, redirecting to login..."); // Debugging log
+                window.location.href = "/login"; // If no token is present, redirect to login page
+                return;
+            }
+
+            // Make an API call to check if token is valid
+            fetch('/api/user', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                })
+                .then(response => {
+                    console.log("API Response Status: ", response.status); // Debugging log
+                    if (response.status === 401) {
+                        // If token has expired or is invalid, redirect to login
+                        console.log("Token expired or invalid, redirecting to login..."); // Debugging log
+                        localStorage.removeItem('jwt_token'); // Remove expired token from localStorage
+                        window.location.href = '/login'; // Redirect to login page
+                    } else if (response.status === 200) {
+                        console.log("Token is valid, user data:", response); // Debugging log
+                    } else {
+                        console.log("Unexpected status:", response.status); // Debugging log
+                    }
+                    return response.json(); // Handle other responses here (for valid token)
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Handle error if the fetch fails
+                    window.location.href = '/login'; // In case of any error, redirect to login page
+                });
+        }
+
+
+        // Call the function to check token expiration on page load
+        checkTokenExpiration();
+
+        // Optional: Set a timeout to periodically check token status if necessary
+        setInterval(checkTokenExpiration, 60000); // Check token expiration every 60 seconds
+    </script>
+    <!-- =============================================end get auth token ========================== -->
+
+    <!-- ===========================upload excel ======================================= -->
+
+    <script>
+    // ✅ Function to get the auth token correctly
+    function getAuthToken() {
+        let token = localStorage.getItem("jwt_token"); // ✅ Use the correct key
+        console.log("Retrieved Auth Token:", token); // ✅ Debug: Print token
+        return token;
+    }
+
+    document.getElementById("importExcelBtn").addEventListener("click", function() {
+        let formData = new FormData();
+        let fileInput = document.getElementById("excelFile");
+        let authToken = getAuthToken(); // ✅ Get auth token
+
+        // ✅ Debugging: Ensure the token is present before making the request
+        if (!authToken) {
+            console.error("Auth token is missing! Redirecting to login.");
+            showMessage("Authentication error: Please log in again.", "danger");
+            return;
+        }
+
+        if (!fileInput.files.length) {
+            showMessage("Please select an Excel file to upload!", "danger");
+            console.error("No file selected!");
+            return;
+        }
+
+        formData.append("excel_file", fileInput.files[0]); // ✅ Only sending "excel_file"
+
+        // ✅ Debug: Print FormData contents
+        for (let pair of formData.entries()) {
+            console.log("FormData Entry:", pair[0], pair[1]);
+        }
+
+        fetch("http://127.0.0.1:8000/api/import-excel", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Authorization": `Bearer ${authToken}`, // ✅ Corrected header
+                "Accept": "application/json"
+            }
+        })
+        .then(async response => {
+            console.log("Response Status:", response.status);
+            console.log("Response Headers:", response.headers);
+
+            let responseBody;
+            try {
+                responseBody = await response.json();
+            } catch (error) {
+                console.error("Failed to parse JSON response:", error);
+                throw new Error(`HTTP error! Status: ${response.status}. Response is not JSON.`);
+            }
+
+            console.log("Full Response Body:", responseBody); // ✅ Debug: Print response body
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}. Message: ${responseBody.message || "Unknown error"}`);
+            }
+
+            return responseBody;
+        })
+        .then(data => {
+            if (data.success) {
+                showMessage("Excel file imported successfully!", "success");
+            } else {
+                showMessage("Failed to import Excel: " + (data.message || "Unknown error"), "danger");
+            }
+        })
+        .catch(error => {
+            showMessage("Error uploading file: " + error.message, "danger");
+            console.error("Upload error:", error);
+        });
+    });
+
+    // ✅ Function to show success/error messages
+    function showMessage(message, type) {
+        let messageDiv = document.getElementById("message");
+        messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    }
+</script>
+
+<!-- =================================end upload exel ================================================ -->
+
+<!-- =====================================================get stock devices =================== -->
+
+    <!-- Initialize DataTables -->
+    <script>
+        $(document).ready(function() {
+            fetchDevices(); // Initial call
+
+            // Polling: Fetch data every 5 seconds
+            setInterval(fetchDevices, 5000);
+
+            function fetchDevices() {
+                let token = localStorage.getItem('jwt_token'); // Retrieve JWT token
+
+                if (!token) {
+                    console.log("No token found, redirecting to login...");
+                    window.location.href = "/login";
+                    return;
+                }
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/devices",
+                    type: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    success: function(response) {
+                        let devices = response.devices;
+                        let tableBody = $("#tableBody");
+                        tableBody.empty(); // Clear existing rows
+
+                        $.each(devices, function(index, device) {
+                            let statusColor = getStatusColor(device.status);
+
+                            let row = `<tr>
+                        <td class="align-middle">${device.id}</td>
+                        <td class="align-middle">${device.item_name}</td>
+                        <td class="align-middle">${device.model_number}</td>
+                        <td class="align-middle">${device.serial_number}</td>
+                        <td class="align-middle" style="color: ${statusColor};">${device.status}</td>
+                        <td class="align-middle">${device.price || '-'}</td>
+                        <td class="align-middle">${device.sold_price || '-'}</td>
+                        <td class="align-middle">${device.office_name}</td>
+                        <td class="align-middle">${device.employee_name}</td>
+                        <td class="align-middle">${device.customer_tin || '-'}</td>
+                        <td class="align-middle">${formatDate(device.sold_date)}</td>
+                    </tr>`;
+
+                            tableBody.append(row);
+                        });
+
+                        // Initialize or update DataTable without sorting (removes sort arrows)
+                        if (!$.fn.DataTable.isDataTable("#dataTable")) {
+                            $("#dataTable").DataTable({
+                                paging: true,
+                                searching: true,
+                                ordering: false, // Disables sorting globally (removes arrows)
+                                info: true,
+                                stateSave: true, // ✅ Preserve pagination, search, and ordering
+                            });
+
+                            // Move the "Add Device" button before the search box
+                            $(".dataTables_filter").before($("#addDeviceBtn"));
+                        } else {
+                            let dataTable = $("#dataTable").DataTable();
+                            let currentPage = dataTable.page(); // ✅ Store current page
+                            dataTable.clear();
+                            dataTable.rows.add($("#tableBody tr"));
+                            dataTable.draw(false); // ✅ Redraw table without changing page
+                            dataTable.page(currentPage).draw("page"); // ✅ Restore page position
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching devices:", xhr.responseText);
+
+                        if (xhr.status === 401) {
+                            console.log("Token expired or invalid, redirecting to login...");
+                            localStorage.removeItem('jwt_token');
+                            window.location.href = '/login';
+                        }
+                    }
+                });
+            }
+
+            function getStatusColor(status) {
+                switch (status.toLowerCase()) {
+                    case "sold":
+                        return "green";
+                    case "maintenance":
+                        return "red";
+                    case "in_office":
+                        return "blue";
+                    case "delivery":
+                        return "orange";
+                    case "damaged":
+                        return "red";
+                    case "under repair":
+                        return "red";
+                    default:
+                        return "black";
+                }
+            }
+
+            function formatDate(isoDate) {
+                if (!isoDate) return '-'; // Handle empty/null dates
+
+                let date = new Date(isoDate);
+                let day = String(date.getDate()).padStart(2, '0');
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let year = date.getFullYear();
+
+                return `${day}-${month}-${year}`;
+            }
+
+            // Open modal when clicking Add Device button
+            $("#addDeviceBtn").click(function() {
+                $("#addDeviceModal").modal("show");
+            });
+
+            // Handle Add Device Form Submission
+            $("#addDeviceForm").submit(function(e) {
+                e.preventDefault();
+
+                let token = localStorage.getItem("jwt_token");
+                if (!token) {
+                    alert("Unauthorized! Please log in.");
+                    return;
+                }
+
+                let newDevice = {
+                    item_name: $("#item_name").val(),
+                    model_number: $("#model_number").val(),
+                    serial_number: $("#serial_number").val(),
+                    price: $("#price").val(),
+                };
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/devices",
+                    type: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    data: JSON.stringify(newDevice),
+                    success: function(response) {
+                        alert("Device added successfully!");
+                        $("#addDeviceModal").modal("hide");
+                        fetchDevices(); // Refresh table
+                    },
+                    error: function(xhr) {
+                        alert("Error adding device: " + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- ===================================================== end get stock devices =================== -->

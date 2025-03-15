@@ -16,6 +16,8 @@ class Device extends Model
         'status',
         'office_id',
         'employee_id',
+        'price',       // ✅ Add price here
+        'batch_id',
     ];
 
     /**
@@ -34,8 +36,8 @@ class Device extends Model
         return $this->belongsTo(User::class, 'employee_id');
     }
 
-    public function batch() {
+    public function batch()
+    {
         return $this->belongsTo(Batch::class);
     }
-    
 }

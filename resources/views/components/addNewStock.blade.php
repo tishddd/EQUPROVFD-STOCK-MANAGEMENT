@@ -1,10 +1,11 @@
 <div class="container mb-4">
     <h2 class="mb-4">Add New Stock</h2>
-    <form action="" method="POST">
+    
+    <form id="importForm" enctype="multipart/form-data">
         <div class="row g-3">
             <div class="col-md-3">
                 <label class="form-label">Batch ID (Auto-Generated)</label>
-                <input type="text" class="form-control" name="batch_id" id="batch_id" disabled>
+                <input type="text" class="form-control" name="batch_id" id="batch_id" readonly>
             </div>
             <div class="col-md-3">
                 <label class="form-label">Item Name</label>
@@ -21,7 +22,6 @@
                 <label class="form-label">Serial Number</label>
                 <input type="text" class="form-control" name="serial_number" required>
             </div>
-
         </div>
 
         <div class="row g-3 mt-2">
@@ -29,13 +29,20 @@
                 <button type="submit" class="btn btn-success w-100">Initiate Stock</button>
             </div>
             <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-info w-100">Import Excel</button>
-
+                <input type="file" id="excelFile" name="file" class="form-control" required>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="button" id="importExcelBtn" class="btn btn-info w-100">Import Excel</button>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-primary w-100">Add Devices</button>
             </div>
         </div>
-
     </form>
+
+    <div id="message" class="mt-3"></div>
 </div>
+
 
 <script>
     // Generate Batch ID based on the current date
@@ -50,3 +57,6 @@
         document.getElementById("batch_id").value = batchId;
     });
 </script>
+
+
+

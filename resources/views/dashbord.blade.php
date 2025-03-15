@@ -97,7 +97,7 @@
             </div>
         </div>
 
-      
+
 
         <!-- <========side bar end ======> -->
 
@@ -130,15 +130,14 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>Item Name</th>
-                                    <th>Model Number</th>
-                                    <th>Serial Number</th>
+                                    <th>Model</th>
+                                    <th>Serial</th>
                                     <th>Status</th>
                                     <th>Price</th>
                                     <th>Sold Price</th>
                                     <th>Office</th>
-                                    <th>Employee</th>
+                                    <th>Sales_officer</th>
                                     <th>Customer Tin</th>
-                                    <th>Created At</th>
                                     <th>Sold Date</th>
                                 </tr>
                             </thead>
@@ -387,7 +386,7 @@
                             let statusColor = getStatusColor(device.status);
 
                             let row = `<tr>
-                        <th class="align-middle text-center">${index + 1}</th>
+                        <td class="align-middle">${device.id}</td>
                         <td class="align-middle">${device.item_name}</td>
                         <td class="align-middle">${device.model_number}</td>
                         <td class="align-middle">${device.serial_number}</td>
@@ -397,7 +396,6 @@
                         <td class="align-middle">${device.office_name}</td>
                         <td class="align-middle">${device.employee_name}</td>
                         <td class="align-middle">${device.customer_tin || '-'}</td>
-                        <td class="align-middle">${formatDate(device.created_at)}</td>
                         <td class="align-middle">${formatDate(device.sold_date)}</td>
                     </tr>`;
 
@@ -410,15 +408,21 @@
                                 paging: true,
                                 searching: true,
                                 ordering: false, // Disables sorting globally (removes arrows)
-                                info: true
+                                info: true,
+                                stateSave: true, // ✅ Preserve pagination, search, and ordering
                             });
 
                             // Move the "Add Device" button before the search box
                             $(".dataTables_filter").before($("#addDeviceBtn"));
                         } else {
                             let dataTable = $("#dataTable").DataTable();
-                            dataTable.clear().rows.add($("#tableBody tr")).draw();
+                            let currentPage = dataTable.page(); // ✅ Store current page
+                            dataTable.clear();
+                            dataTable.rows.add($("#tableBody tr"));
+                            dataTable.draw(false); // ✅ Redraw table without changing page
+                            dataTable.page(currentPage).draw("page"); // ✅ Restore page position
                         }
+
                     },
                     error: function(xhr, status, error) {
                         console.error("Error fetching devices:", xhr.responseText);
@@ -674,6 +678,11 @@
     </script>
 
     <!-- ========================end dashbord stats ============================== -->
+
+
+    <!-- ==========================upload excel ============================ -->
+
+    
 
 
 </body>
