@@ -61,6 +61,7 @@
                                     <th>Sales_officer</th>
                                     <th>Customer Tin</th>
                                     <th>Sold Date</th>
+                                    <th>Batch</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -106,7 +107,7 @@
                     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </div>
         </main>
-        @include('components.sideManue')
+        <!-- @include('components.sideManue') -->
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS-->
@@ -125,8 +126,8 @@
     <!-- Bootstrap JS -->
     <script src="{{ asset('assets/admindashbordAssets/bootstrap-4.1.1/dist/js/bootstrap.min.js') }}"></script>
 
-      <!-- ============================== get user auth token ========================================= -->
-      <script>
+    <!-- ============================== get user auth token ========================================= -->
+    <script>
         // Function to check for expired token and redirect to login page
         function checkTokenExpiration() {
             let token = localStorage.getItem('jwt_token'); // Retrieve JWT token from localStorage
@@ -177,89 +178,89 @@
     <!-- ===========================upload excel ======================================= -->
 
     <script>
-    // ✅ Function to get the auth token correctly
-    function getAuthToken() {
-        let token = localStorage.getItem("jwt_token"); // ✅ Use the correct key
-        console.log("Retrieved Auth Token:", token); // ✅ Debug: Print token
-        return token;
-    }
-
-    document.getElementById("importExcelBtn").addEventListener("click", function() {
-        let formData = new FormData();
-        let fileInput = document.getElementById("excelFile");
-        let authToken = getAuthToken(); // ✅ Get auth token
-
-        // ✅ Debugging: Ensure the token is present before making the request
-        if (!authToken) {
-            console.error("Auth token is missing! Redirecting to login.");
-            showMessage("Authentication error: Please log in again.", "danger");
-            return;
+        // ✅ Function to get the auth token correctly
+        function getAuthToken() {
+            let token = localStorage.getItem("jwt_token"); // ✅ Use the correct key
+            console.log("Retrieved Auth Token:", token); // ✅ Debug: Print token
+            return token;
         }
 
-        if (!fileInput.files.length) {
-            showMessage("Please select an Excel file to upload!", "danger");
-            console.error("No file selected!");
-            return;
-        }
+        document.getElementById("importExcelBtn").addEventListener("click", function() {
+            let formData = new FormData();
+            let fileInput = document.getElementById("excelFile");
+            let authToken = getAuthToken(); // ✅ Get auth token
 
-        formData.append("excel_file", fileInput.files[0]); // ✅ Only sending "excel_file"
-
-        // ✅ Debug: Print FormData contents
-        for (let pair of formData.entries()) {
-            console.log("FormData Entry:", pair[0], pair[1]);
-        }
-
-        fetch("http://127.0.0.1:8000/api/import-excel", {
-            method: "POST",
-            body: formData,
-            headers: {
-                "Authorization": `Bearer ${authToken}`, // ✅ Corrected header
-                "Accept": "application/json"
-            }
-        })
-        .then(async response => {
-            console.log("Response Status:", response.status);
-            console.log("Response Headers:", response.headers);
-
-            let responseBody;
-            try {
-                responseBody = await response.json();
-            } catch (error) {
-                console.error("Failed to parse JSON response:", error);
-                throw new Error(`HTTP error! Status: ${response.status}. Response is not JSON.`);
+            // ✅ Debugging: Ensure the token is present before making the request
+            if (!authToken) {
+                console.error("Auth token is missing! Redirecting to login.");
+                showMessage("Authentication error: Please log in again.", "danger");
+                return;
             }
 
-            console.log("Full Response Body:", responseBody); // ✅ Debug: Print response body
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}. Message: ${responseBody.message || "Unknown error"}`);
+            if (!fileInput.files.length) {
+                showMessage("Please select an Excel file to upload!", "danger");
+                console.error("No file selected!");
+                return;
             }
 
-            return responseBody;
-        })
-        .then(data => {
-            if (data.success) {
-                showMessage("Excel file imported successfully!", "success");
-            } else {
-                showMessage("Failed to import Excel: " + (data.message || "Unknown error"), "danger");
+            formData.append("excel_file", fileInput.files[0]); // ✅ Only sending "excel_file"
+
+            // ✅ Debug: Print FormData contents
+            for (let pair of formData.entries()) {
+                console.log("FormData Entry:", pair[0], pair[1]);
             }
-        })
-        .catch(error => {
-            showMessage("Error uploading file: " + error.message, "danger");
-            console.error("Upload error:", error);
+
+            fetch("http://127.0.0.1:8000/api/import-excel", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "Authorization": `Bearer ${authToken}`, // ✅ Corrected header
+                        "Accept": "application/json"
+                    }
+                })
+                .then(async response => {
+                    console.log("Response Status:", response.status);
+                    console.log("Response Headers:", response.headers);
+
+                    let responseBody;
+                    try {
+                        responseBody = await response.json();
+                    } catch (error) {
+                        console.error("Failed to parse JSON response:", error);
+                        throw new Error(`HTTP error! Status: ${response.status}. Response is not JSON.`);
+                    }
+
+                    console.log("Full Response Body:", responseBody); // ✅ Debug: Print response body
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}. Message: ${responseBody.message || "Unknown error"}`);
+                    }
+
+                    return responseBody;
+                })
+                .then(data => {
+                    if (data.success) {
+                        showMessage("Excel file imported successfully!", "success");
+                    } else {
+                        showMessage("Failed to import Excel: " + (data.message || "Unknown error"), "danger");
+                    }
+                })
+                .catch(error => {
+                    showMessage("Error uploading file: " + error.message, "danger");
+                    console.error("Upload error:", error);
+                });
         });
-    });
 
-    // ✅ Function to show success/error messages
-    function showMessage(message, type) {
-        let messageDiv = document.getElementById("message");
-        messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-    }
-</script>
+        // ✅ Function to show success/error messages
+        function showMessage(message, type) {
+            let messageDiv = document.getElementById("message");
+            messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+    </script>
 
-<!-- =================================end upload exel ================================================ -->
+    <!-- =================================end upload exel ================================================ -->
 
-<!-- =====================================================get stock devices =================== -->
+    <!-- =====================================================get stock devices =================== -->
 
     <!-- Initialize DataTables -->
     <script>
@@ -305,6 +306,7 @@
                         <td class="align-middle">${device.employee_name}</td>
                         <td class="align-middle">${device.customer_tin || '-'}</td>
                         <td class="align-middle">${formatDate(device.sold_date)}</td>
+                        <td class="align-middle">${device.batch_id}</td>
                     </tr>`;
 
                             tableBody.append(row);
@@ -315,7 +317,10 @@
                             $("#dataTable").DataTable({
                                 paging: true,
                                 searching: true,
-                                ordering: false, // Disables sorting globally (removes arrows)
+                                ordering: true, // Enable ordering
+                                order: [
+                                    [0, "desc"]
+                                ], // Order by first column (id) in descending order
                                 info: true,
                                 stateSave: true, // ✅ Preserve pagination, search, and ordering
                             });
@@ -327,9 +332,10 @@
                             let currentPage = dataTable.page(); // ✅ Store current page
                             dataTable.clear();
                             dataTable.rows.add($("#tableBody tr"));
-                            dataTable.draw(false); // ✅ Redraw table without changing page
+                            dataTable.order([0, "desc"]).draw(false); // ✅ Maintain descending order
                             dataTable.page(currentPage).draw("page"); // ✅ Restore page position
                         }
+
 
                     },
                     error: function(xhr, status, error) {

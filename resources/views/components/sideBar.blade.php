@@ -18,10 +18,11 @@
 
                         </li>
                         <li>
-                            <a href="#" class="text-dark d-flex align-items-center py-1">
+                            <a href="{{ route('stockList') }}" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-format-list-bulleted mdi-18px text-primary mr-2"></span> Stock List
                             </a>
                         </li>
+
                         <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-chart-bar mdi-18px text-primary mr-2"></span> Stock Report

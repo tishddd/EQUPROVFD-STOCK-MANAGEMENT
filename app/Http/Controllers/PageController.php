@@ -25,4 +25,15 @@ class PageController extends Controller
     {
         return view('pages.addnewStock');
     }
+
+    public function stockList()
+    {
+        return view('pages.stocklist');
+    }
+
+    public function goToStock($batch_id) {
+        // Fetch stock details based on $batch_id
+        return view('pages.stock', compact('batch_id'));
+    }
+    
 }

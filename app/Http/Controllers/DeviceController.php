@@ -35,7 +35,7 @@ class DeviceController extends Controller
                     'updated_at'   => $device->updated_at,
                     'office_name'  => $device->office ? $device->office->region : null,
                     'employee_name' => $device->employee ? $device->employee->name : null,
-                    'batch_id'     => $device->batch ? $device->batch->batch_id : null // Get Batch ID
+                    'batch_id'     => $device->batch_id,
                 ];
             });
 

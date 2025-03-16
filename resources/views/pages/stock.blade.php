@@ -105,8 +105,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb rounded-0 bg-white border-bottom m-0">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Library</a></li>
-                    <li class="breadcrumb-item active" class="-block dark text-white p-2" aria-current="page">BAT-2025-02-08|001</li>
+                    <li class="breadcrumb-item"><a href="#"></a></li>
+                    <p> {{ $batch_id }}</p>
                 </ol>
             </nav>
             <div class="content p-3">
@@ -353,7 +353,6 @@
 
     <!-- =====================================================get stock devices =================== -->
 
-    <!-- Initialize DataTables -->
     <script>
         $(document).ready(function() {
             fetchDevices(); // Initial call
@@ -362,7 +361,7 @@
             setInterval(fetchDevices, 5000);
 
             function fetchDevices() {
-                let token = localStorage.getItem('jwt_token'); // Retrieve JWT token
+                let token = localStorage.getItem("jwt_token"); // Retrieve JWT token
 
                 if (!token) {
                     console.log("No token found, redirecting to login...");
@@ -370,73 +369,107 @@
                     return;
                 }
 
+                // Extract batch_id from URL
+                let urlParts = window.location.pathname.split("/");
+                let batchId = urlParts[urlParts.length - 1]; // Get last part of URL
+
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/devices",
+                    url: `/api/getStock/${batchId}`, // Fetch stock by batch_id
                     type: "GET",
                     headers: {
-                        "Authorization": `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                     success: function(response) {
-                        let devices = response.devices;
-                        let tableBody = $("#tableBody");
-                        tableBody.empty(); // Clear existing rows
+                        console.log("API Response:", response); // Log full API response
 
-                        $.each(devices, function(index, device) {
-                            let statusColor = getStatusColor(device.status);
+                        let devices = response.data; // Ensure we use the correct property
+                        console.log("Devices Array:", devices); // Log devices array
 
-                            let row = `<tr>
-                        <td class="align-middle">${device.id}</td>
-                        <td class="align-middle">${device.item_name}</td>
-                        <td class="align-middle">${device.model_number}</td>
-                        <td class="align-middle">${device.serial_number}</td>
-                        <td class="align-middle" style="color: ${statusColor};">${device.status}</td>
-                        <td class="align-middle">${device.price || '-'}</td>
-                        <td class="align-middle">${device.sold_price || '-'}</td>
-                        <td class="align-middle">${device.office_name}</td>
-                        <td class="align-middle">${device.employee_name}</td>
-                        <td class="align-middle">${device.customer_tin || '-'}</td>
-                        <td class="align-middle">${formatDate(device.sold_date)}</td>
-                    </tr>`;
+                        // Convert devices into DataTable-friendly format
+                        let tableData = devices.map(device => [
+                            device.id,
+                            device.item_name,
+                            device.model_number,
+                            device.serial_number,
+                            `<span style="color:${getStatusColor(device.status)};">${device.status}</span>`,
+                            device.price || "-",
+                            device.sold_price || "-",
+                            device.office_name,
+                            device.employee_name,
+                            device.customer_tin || "-",
+                            formatDate(device.sold_date),
+                        ]);
 
-                            tableBody.append(row);
-                        });
+                        console.log("Formatted Table Data:", tableData); // Log formatted data
 
-                        // Initialize or update DataTable without sorting (removes sort arrows)
+                        // Initialize or update DataTable
                         if (!$.fn.DataTable.isDataTable("#dataTable")) {
+                            console.log("Initializing DataTable...");
                             $("#dataTable").DataTable({
+                                data: tableData,
+                                columns: [{
+                                        title: "ID"
+                                    },
+                                    {
+                                        title: "Item Name"
+                                    },
+                                    {
+                                        title: "Model Number"
+                                    },
+                                    {
+                                        title: "Serial Number"
+                                    },
+                                    {
+                                        title: "Status"
+                                    },
+                                    {
+                                        title: "Price"
+                                    },
+                                    {
+                                        title: "Sold Price"
+                                    },
+                                    {
+                                        title: "Office"
+                                    },
+                                    {
+                                        title: "Employee"
+                                    },
+                                    {
+                                        title: "Customer TIN"
+                                    },
+                                    {
+                                        title: "Sold Date"
+                                    },
+                                ],
                                 paging: true,
                                 searching: true,
-                                ordering: true, // Enable ordering
+                                ordering: true,
                                 order: [
                                     [0, "desc"]
-                                ], // Order by first column (id) in descending order
+                                ],
                                 info: true,
-                                stateSave: true, // ✅ Preserve pagination, search, and ordering
+                                stateSave: true,
                             });
 
-                            // Move the "Add Device" button before the search box
                             $(".dataTables_filter").before($("#addDeviceBtn"));
                         } else {
+                            console.log("Updating DataTable...");
                             let dataTable = $("#dataTable").DataTable();
-                            let currentPage = dataTable.page(); // ✅ Store current page
                             dataTable.clear();
-                            dataTable.rows.add($("#tableBody tr"));
-                            dataTable.order([0, "desc"]).draw(false); // ✅ Maintain descending order
-                            dataTable.page(currentPage).draw("page"); // ✅ Restore page position
+                            dataTable.rows.add(tableData); // Add new rows
+                            dataTable.draw(); // Redraw table
                         }
-
-
                     },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching devices:", xhr.responseText);
+                    error: function(xhr) {
+                        console.error("Error fetching stock:", xhr.responseText);
 
                         if (xhr.status === 401) {
                             console.log("Token expired or invalid, redirecting to login...");
-                            localStorage.removeItem('jwt_token');
-                            window.location.href = '/login';
+                            localStorage.removeItem("jwt_token");
+                            window.location.href = "/login";
                         }
-                    }
+                    },
                 });
             }
 
@@ -451,7 +484,6 @@
                     case "delivery":
                         return "orange";
                     case "damaged":
-                        return "red";
                     case "under repair":
                         return "red";
                     default:
@@ -460,59 +492,15 @@
             }
 
             function formatDate(isoDate) {
-                if (!isoDate) return '-'; // Handle empty/null dates
-
+                if (!isoDate) return "-";
                 let date = new Date(isoDate);
-                let day = String(date.getDate()).padStart(2, '0');
-                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let day = String(date.getDate()).padStart(2, "0");
+                let month = String(date.getMonth() + 1).padStart(2, "0");
                 let year = date.getFullYear();
-
                 return `${day}-${month}-${year}`;
             }
-
-            // Open modal when clicking Add Device button
-            $("#addDeviceBtn").click(function() {
-                $("#addDeviceModal").modal("show");
-            });
-
-            // Handle Add Device Form Submission
-            $("#addDeviceForm").submit(function(e) {
-                e.preventDefault();
-
-                let token = localStorage.getItem("jwt_token");
-                if (!token) {
-                    alert("Unauthorized! Please log in.");
-                    return;
-                }
-
-                let newDevice = {
-                    item_name: $("#item_name").val(),
-                    model_number: $("#model_number").val(),
-                    serial_number: $("#serial_number").val(),
-                    price: $("#price").val(),
-                };
-
-                $.ajax({
-                    url: "http://127.0.0.1:8000/api/devices",
-                    type: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    data: JSON.stringify(newDevice),
-                    success: function(response) {
-                        alert("Device added successfully!");
-                        $("#addDeviceModal").modal("hide");
-                        fetchDevices(); // Refresh table
-                    },
-                    error: function(xhr) {
-                        alert("Error adding device: " + xhr.responseText);
-                    }
-                });
-            });
         });
     </script>
-
     <!-- ===================================================== end get stock devices =================== -->
 
 
@@ -630,55 +618,66 @@
 
     <!-- JavaScript to Fetch API and Update Dashboard -->
     <script>
-        async function fetchDashboardStats() {
-            try {
-                let token = localStorage.getItem('jwt_token'); // Retrieve JWT token
+       async function fetchDashboardStats() {
+    try {
+        let token = localStorage.getItem("jwt_token"); // Retrieve JWT token
 
-                if (!token) {
-                    console.log("Token not found, redirecting to login...");
-                    window.location.href = "/login"; // Redirect if token is missing
-                    return;
-                }
-
-                const response = await fetch("http://127.0.0.1:8000/api/dashboard/stats", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        console.log("Token expired or invalid, redirecting to login...");
-                        localStorage.removeItem('jwt_token'); // Remove expired token
-                        window.location.href = "/login"; // Redirect to login
-                        return;
-                    }
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                // Update Dashboard Stats
-                document.getElementById("total-devices").textContent = data.total_devices;
-                document.getElementById("total-sold-devices").textContent = data.sold_devices;
-                document.getElementById("pos-received").textContent = data.pos_received;
-                document.getElementById("thermal-received").textContent = data.thermal_printer_received;
-                document.getElementById("pos-sold").textContent = data.pos_sold;
-                document.getElementById("thermal-sold").textContent = data.thermal_printer_sold;
-                document.getElementById("pos-remaining").textContent = data.pos_remaining;
-                document.getElementById("thermal-remaining").textContent = data.thermal_printer_remaining;
-            } catch (error) {
-                console.error("Error fetching dashboard stats:", error);
-            }
+        if (!token) {
+            console.log("Token not found, redirecting to login...");
+            window.location.href = "/login"; // Redirect if token is missing
+            return;
         }
 
-        // Fetch data on page load
-        fetchDashboardStats();
+        // Extract batch_id from URL
+        let urlParts = window.location.pathname.split("/");
+        let batchId = urlParts[urlParts.length - 1]; // Get last part of URL
 
-        // Refresh data every 10 seconds
-        setInterval(fetchDashboardStats, 10000);
+        if (!batchId) {
+            console.error("Batch ID not found in URL.");
+            return;
+        }
+
+        const response = await fetch(`http://127.0.0.1:8000/api/stats/${batchId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                console.log("Token expired or invalid, redirecting to login...");
+                localStorage.removeItem("jwt_token"); // Remove expired token
+                window.location.href = "/login"; // Redirect to login
+                return;
+            }
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Dashboard Stats Response:", data); // Debugging log
+
+        // Update Dashboard Stats
+        document.getElementById("total-devices").textContent = data.total_devices || 0;
+        document.getElementById("total-sold-devices").textContent = data.sold_devices || 0;
+        document.getElementById("pos-received").textContent = data.pos_received || 0;
+        document.getElementById("thermal-received").textContent = data.thermal_printer_received || 0;
+        document.getElementById("pos-sold").textContent = data.pos_sold || 0;
+        document.getElementById("thermal-sold").textContent = data.thermal_printer_sold || 0;
+        document.getElementById("pos-remaining").textContent = data.pos_remaining || 0;
+        document.getElementById("thermal-remaining").textContent = data.thermal_printer_remaining || 0;
+    } catch (error) {
+        console.error("Error fetching dashboard stats:", error);
+    }
+}
+
+// Fetch data on page load
+fetchDashboardStats();
+
+// Refresh data every 10 seconds
+setInterval(fetchDashboardStats, 10000);
+
     </script>
 
     <!-- ========================end dashbord stats ============================== -->
