@@ -36,4 +36,9 @@ class PageController extends Controller
         return view('pages.stock', compact('batch_id'));
     }
     
+    public function stockTransfer()
+    {
+        return view('pages.transferPage');
+    }
+
 }

@@ -129,14 +129,14 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Item Name</th>
+                                    <th>Name</th>
                                     <th>Model</th>
                                     <th>Serial</th>
                                     <th>Status</th>
                                     <th>Price</th>
-                                    <th>Sold Price</th>
+                                    <th>S.Price</th>
                                     <th>Office</th>
-                                    <th>Sales_officer</th>
+                                    <th>Sales.officer</th>
                                     <th>Customer Tin</th>
                                     <th>Sold Date</th>
                                 </tr>

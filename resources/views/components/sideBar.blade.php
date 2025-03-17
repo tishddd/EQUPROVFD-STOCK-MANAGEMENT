@@ -23,11 +23,11 @@
                             </a>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-chart-bar mdi-18px text-primary mr-2"></span> Stock Report
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </li>
@@ -48,8 +48,13 @@
                 <div class="collapse bg-light rounded mt-2 px-3" id="collapseStockMovement">
                     <ul class="list-unstyled py-2">
                         <li>
-                            <a href="#" class="text-dark d-flex align-items-center py-1">
+                            <a href="{{ route('stockTransfer') }}" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-clipboard-text mdi-18px text-success mr-2"></span> Transfers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-dark d-flex align-items-center py-1">
+                                <span class="mdi mdi-receipt mdi-18px text-success mr-2"></span> Received
                             </a>
                         </li>
                         <li>

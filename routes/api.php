@@ -9,6 +9,7 @@ use App\Http\Controllers\BatchesController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\DeviceTransferController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,6 +27,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/import-excel', [DeviceController::class, 'importExcel']);
     Route::get('/getStock/{batch_id}', [StockController::class, 'getStockByBatch'])->name('getStock');
     Route::get('/stats/{batch_id}', [StockController::class, 'stats']);
+    Route::post('/transfer-device', [DeviceTransferController::class, 'transferDevice']);
 
 
 
