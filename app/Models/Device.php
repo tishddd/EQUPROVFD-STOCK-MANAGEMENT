@@ -16,7 +16,10 @@ class Device extends Model
         'status',
         'office_id',
         'employee_id',
-        'price',       // ✅ Add price here
+        'price',
+        'sold_price',
+        'customer_tin',
+        'sold_date',
         'batch_id',
     ];
 

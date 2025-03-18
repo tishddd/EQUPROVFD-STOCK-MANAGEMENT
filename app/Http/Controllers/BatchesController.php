@@ -69,18 +69,39 @@ class BatchesController extends Controller
         }
     }
 
+
+
     public function destroy($id)
-    {
-        try {
-            $batch = Batch::findOrFail($id);
-            $batch->delete();
-            return $this->successResponse('batch deleted successfully');
-        } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('batch not found', $id);
-        } catch (\Exception $e) {
-            return $this->unexpectedErrorResponse($e);
-        }
+{
+    try {
+        $batch = Batch::findOrFail($id);
+        
+        // Delete related devices first
+        \DB::table('devices')->where('batch_id', $batch->batch_id)->delete();
+
+        // Delete the batch
+        $batch->delete();
+
+        return $this->successResponse('Batch and related devices deleted successfully');
+    } catch (ModelNotFoundException $e) {
+        return $this->notFoundResponse('Batch not found', $id);
+    } catch (\Exception $e) {
+        return $this->unexpectedErrorResponse($e);
     }
+}
+
+    // public function destroy($id)
+    // {
+    //     try {
+    //         $batch = Batch::findOrFail($id);
+    //         $batch->delete();
+    //         return $this->successResponse('batch deleted successfully');
+    //     } catch (ModelNotFoundException $e) {
+    //         return $this->notFoundResponse('batch not found', $id);
+    //     } catch (\Exception $e) {
+    //         return $this->unexpectedErrorResponse($e);
+    //     }
+    // }
 
     //<< =====================================Device Method End ====================================>>
 

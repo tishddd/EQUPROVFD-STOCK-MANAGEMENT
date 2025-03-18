@@ -91,46 +91,67 @@ class DeviceController extends Controller
         }
     }
     
-    
     public function update(Request $request, $id)
-{
-    try {
-        $validated = $this->validateDevice($request, $id);
-        $device = Device::findOrFail($id);
-
-        // If batch ID needs to be updated, generate or find a batch
-        if ($request->has('batch_id')) {
-            // Retrieve or create a batch based on today's date and store the batch_id as a string
-            $today = now()->format('Y-m-d');
-            $batch = Batch::firstOrCreate(
-                ['batch_date' => $today],
-                ['batch_id' => 'BAT-' . $today, 'description' => 'Auto-generated batch']
-            );
-
-            // Use the batch_id as a string instead of the batch's integer id
-            $validated['batch_id'] = $batch->batch_id;  // Store the batch_id as a string
+    {
+        try {
+            $validated = $this->validateDevice($request, $id);
+            $device = Device::findOrFail($id);
+    
+            // Explicitly set nullable fields
+            $device->fill($validated);
+            $device->save(); 
+    
+            return $this->successResponse('Device updated successfully', ['device' => $device]);
+        } catch (ValidationException $e) {
+            return $this->validationErrorResponse($e);
+        } catch (ModelNotFoundException $e) {
+            return $this->notFoundResponse('Device not found', $id);
+        } catch (QueryException $e) {
+            return $this->databaseErrorResponse($e);
+        } catch (\Exception $e) {
+            return $this->unexpectedErrorResponse($e);
         }
-
-        // Explicitly assign price if present
-        if ($request->has('price')) {
-            $device->price = $request->input('price');
-        }
-
-        // Update the device with validated data
-        $device->fill($validated);
-        $device->save();
-
-        return $this->successResponse('Device updated successfully', ['device' => $device]);
-    } catch (ValidationException $e) {
-        return $this->validationErrorResponse($e);
-    } catch (ModelNotFoundException $e) {
-        return $this->notFoundResponse('Device not found', $id);
-    } catch (QueryException $e) {
-        return $this->databaseErrorResponse($e);
-    } catch (\Exception $e) {
-        return $this->unexpectedErrorResponse($e);
     }
-}
+    
+//     public function update(Request $request, $id)
+// {
+//     try {
+//         $validated = $this->validateDevice($request, $id);
+//         $device = Device::findOrFail($id);
+
+//         // If batch ID needs to be updated, generate or find a batch
+//         if ($request->has('batch_id')) {
+//             // Retrieve or create a batch based on today's date and store the batch_id as a string
+//             // $today = now()->format('Y-m-d');
+//             // $batch = Batch::firstOrCreate(
+//             //     ['batch_date' => $today],
+//             //     ['batch_id' => 'BAT-' . $today, 'description' => 'Auto-generated batch']
+//             // );
+
+//             // Use the batch_id as a string instead of the batch's integer id
+//             // $validated['batch_id'] = $batch->batch_id;  // Store the batch_id as a string
+//         }
+
+//         // // Explicitly assign price if present
+//         // if ($request->has('price')) {
+//         //     $device->price = $request->input('price');
+//         // }
+
+//         // Update the device with validated data
+//         $device->fill($validated);
+//         $device->save();
+
+//         return $this->successResponse('Device updated successfully', ['device' => $device]);
+//     } catch (ValidationException $e) {
+//         return $this->validationErrorResponse($e);
+//     } catch (ModelNotFoundException $e) {
+//         return $this->notFoundResponse('Device not found', $id);
+//     } catch (QueryException $e) {
+//         return $this->databaseErrorResponse($e);
+//     } catch (\Exception $e) {
+//         return $this->unexpectedErrorResponse($e);
+//     }
+// }
 
 
     public function destroy($id)

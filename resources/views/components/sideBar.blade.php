@@ -23,11 +23,11 @@
                             </a>
                         </li>
 
-                        <!-- <li>
+                        <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
-                                <span class="mdi mdi-chart-bar mdi-18px text-primary mr-2"></span> Stock Report
+                                <span class="mdi mdi-chart-bar mdi-18px text-primary mr-2"></span> Report Issue
                             </a>
-                        </li> -->
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -54,17 +54,24 @@
                         </li>
                         <li>
                             <a href="#" class="text-dark d-flex align-items-center py-1">
-                                <span class="mdi mdi-receipt mdi-18px text-success mr-2"></span> Received
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-dark d-flex align-items-center py-1">
                                 <span class="mdi mdi-receipt mdi-18px text-success mr-2"></span> Returns
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+
+            <!-- Transactions -->
+            <!-- Transactions -->
+            <li class="mt-2">
+                <a class="d-flex align-items-center text-white py-2 rounded collapsed" href="#collapseStockMovement" role="button" aria-expanded="false" aria-controls="collapseStockMovement">
+                    <span class="mdi mdi-swap-horizontal mdi-24px text-success mr-2"></span> Transaction
+                </a>
+            </li>
+
+
+
+
 
             <!-- Revenue Report -->
             <li class="mt-2">
@@ -73,12 +80,13 @@
                 </a>
             </li>
 
-            <!-- Users -->
+            <!-- Offices -->
             <li class="mt-2">
                 <a href="#" class="text-white d-flex align-items-center py-2 rounded">
-                    <span class="mdi mdi-account-group mdi-24px text-danger mr-2"></span> Users
+                    <span class="bi bi-buildings-fill  mdi-24px text-danger mr-2"></span> Offices
                 </a>
             </li>
+
 
             <!-- Settings -->
             <li class="mt-2">

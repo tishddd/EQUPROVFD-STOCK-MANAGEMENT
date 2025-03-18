@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 
@@ -55,9 +54,8 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="batchTableBody">
-                        </tbody>
-                    </table> 
+                        <tbody id="batchTableBody"></tbody>
+                    </table>
 
 
 
@@ -156,69 +154,154 @@
     <!-- ===================================get batches ============================================ -->
 
     <script>
-    $(document).ready(function() {
-        fetchBatches();
+        $(document).ready(function() {
+            fetchBatches();
 
-        function fetchBatches() {
-            let token = localStorage.getItem('jwt_token'); // Retrieve token from local storage
+            function fetchBatches() {
+                let token = localStorage.getItem('jwt_token'); // Retrieve token from local storage
 
-            if (!token) {
-                console.log("Token not found, redirecting to login...");
-                window.location.href = "/login"; // Redirect if token is missing
-                return;
+                if (!token) {
+                    console.log("Token not found, redirecting to login...");
+                    window.location.href = "/login"; // Redirect if token is missing
+                    return;
+                }
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/batches",
+                    type: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}` // Include JWT token in the request headers
+                    },
+                    success: function(response) {
+                        let tableBody = "";
+
+                        // Sort batches in descending order by batch_date
+                        response.batches.sort((a, b) => new Date(b.batch_date) - new Date(a.batch_date));
+
+                        response.batches.forEach(batch => {
+                            tableBody += `<tr id="row-${batch.id}">
+                            <td>${batch.id}</td>
+                            <td>${batch.batch_id}</td>
+                            <td>${batch.batch_date}</td>
+                            <td>${batch.description || '-'}</td>
+                            <td>
+                                <button onclick="goToStock('${batch.batch_id}')" class="btn btn-info btn-sm">View Stock</button>
+                                <button onclick="deleteBatch(${batch.id})" class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                        </tr>`;
+                        });
+
+                        $("#batchTableBody").html(tableBody);
+                        $("#batchTable").DataTable({
+                            "order": [
+                                [2, "desc"]
+                            ] // Ensure DataTable sorts by batch_date in descending order
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching batches:", xhr.responseText);
+                        if (xhr.status === 401) {
+                            console.log("Unauthorized access, redirecting to login...");
+                            localStorage.removeItem('jwt_token'); // Remove invalid token
+                            window.location.href = "/login"; // Redirect to login
+                        }
+                    }
+                });
             }
+        });
+
+        function goToStock(batchId) {
+            window.location.href = `/goToStock/${batchId}`;
+        }
+
+        function deleteBatch(batchId) {
+            if (!confirm("Are you sure you want to delete this batch?")) return;
+
+            let token = localStorage.getItem('jwt_token');
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/batches",
-                type: "GET",
+                url: `http://127.0.0.1:8000/api/batches/${batchId}`,
+                type: "DELETE",
                 headers: {
-                    "Authorization": `Bearer ${token}` // Include JWT token in the request headers
+                    "Authorization": `Bearer ${token}`
                 },
-                success: function(response) {
-                    let tableBody = "";
+                success: function() {
+                    $(`#row-${batchId}`).remove();
+                    alert("Batch deleted successfully!");
+                },
+                error: function(xhr) {
+                    console.error("Error deleting batch:", xhr.responseText);
+                    alert("Failed to delete batch. Please try again.");
+                }
+            });
+        }
+    </script>
+    <!-- 
+    <script>
+        $(document).ready(function() {
+            fetchBatches();
 
-                    // Sort batches in descending order by batch_date
-                    response.batches.sort((a, b) => new Date(b.batch_date) - new Date(a.batch_date));
+            function fetchBatches() {
+                let token = localStorage.getItem('jwt_token'); // Retrieve token from local storage
 
-                    response.batches.forEach(batch => {
-                        tableBody += `<tr>
+                if (!token) {
+                    console.log("Token not found, redirecting to login...");
+                    window.location.href = "/login"; // Redirect if token is missing
+                    return;
+                }
+
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/batches",
+                    type: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}` // Include JWT token in the request headers
+                    },
+                    success: function(response) {
+                        let tableBody = "";
+
+                        // Sort batches in descending order by batch_date
+                        response.batches.sort((a, b) => new Date(b.batch_date) - new Date(a.batch_date));
+
+                        response.batches.forEach(batch => {
+                            tableBody += `<tr>
                             <td>${batch.id}</td>
                             <td>${batch.batch_id}</td>
                             <td>${batch.batch_date}</td>
                             <td>${batch.description || '-'}</td>
                             <td><button onclick="goToStock('${batch.batch_id}')">View Stock</button></td>
                         </tr>`;
-                    });
+                        });
 
-                    $("#batchTableBody").html(tableBody);
-                    $("#batchTable").DataTable({
-                        "order": [[2, "desc"]] // Ensure DataTable sorts by batch_date in descending order
-                    });
-                },
-                error: function(xhr) {
-                    console.error("Error fetching batches:", xhr.responseText);
-                    if (xhr.status === 401) {
-                        console.log("Unauthorized access, redirecting to login...");
-                        localStorage.removeItem('jwt_token'); // Remove invalid token
-                        window.location.href = "/login"; // Redirect to login
+                        $("#batchTableBody").html(tableBody);
+                        $("#batchTable").DataTable({
+                            "order": [
+                                [2, "desc"]
+                            ] // Ensure DataTable sorts by batch_date in descending order
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching batches:", xhr.responseText);
+                        if (xhr.status === 401) {
+                            console.log("Unauthorized access, redirecting to login...");
+                            localStorage.removeItem('jwt_token'); // Remove invalid token
+                            window.location.href = "/login"; // Redirect to login
+                        }
                     }
-                }
-            });
+                });
+            }
+        });
+
+        function goToStock(batchId) {
+            window.location.href = `/goToStock/${batchId}`;
         }
-    });
-
-    function goToStock(batchId) {
-    window.location.href = `/goToStock/${batchId}`;
-}
-
-</script>
+    </script> -->
 
 
     <!-- ===================================end get batches =========================================== -->
 
-        <!-- ==========================side menue==================== -->
+    <!-- ==========================side menue==================== -->
 
-        <script>
+    <script>
         // Function to check for expired token and redirect to login page
         function checkTokenExpiration() {
             let token = localStorage.getItem('jwt_token'); // Retrieve JWT token from localStorage
