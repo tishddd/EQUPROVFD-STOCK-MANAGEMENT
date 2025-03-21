@@ -104,9 +104,9 @@
         <main class="main flex-grow-1">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb rounded-0 bg-white border-bottom m-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Library</a></li>
-                    <li class="breadcrumb-item active" class="-block dark text-white p-2" aria-current="page">BAT-2025-02-08|001</li>
+                    <li class="breadcrumb-item active" class="-block dark text-white p-2" aria-current="page">BAT-2025-02-08</li>
                 </ol>
             </nav>
             <div class="content p-3">
@@ -135,10 +135,11 @@
                                     <th>Status</th>
                                     <th>Price</th>
                                     <th>S.Price</th>
+                                    <th>code</th>
                                     <th>Office</th>
-                                    <th>Sales.officer</th>
-                                    <th>Customer Tin</th>
-                                    <th>Sold Date</th>
+                                    <th>Saler</th>
+                                    <th>Tin</th>
+                                    <th>S.Date</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -393,6 +394,7 @@
                         <td class="align-middle" style="color: ${statusColor};">${device.status}</td>
                         <td class="align-middle">${device.price || '-'}</td>
                         <td class="align-middle">${device.sold_price || '-'}</td>
+                        <td class="align-middle">${device.region_code}</td>
                         <td class="align-middle">${device.office_name}</td>
                         <td class="align-middle">${device.employee_name}</td>
                         <td class="align-middle">${device.customer_tin || '-'}</td>

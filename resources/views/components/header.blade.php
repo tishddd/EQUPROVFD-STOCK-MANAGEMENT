@@ -5,7 +5,7 @@
             </a>
             <div class="mdi mdi-menu mdi-24px text-muted" id="toggle-sidebar"></div>
             <nav class="mx-5 d-none d-lg-block">
-                <a href="#" class="px-2">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="px-2">Dashboard</a>
                 <a href="#" class="px-2">Users</a>
                 <a href="#" class="px-2">Settings</a>
             </nav>

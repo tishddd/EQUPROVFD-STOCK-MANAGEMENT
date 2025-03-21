@@ -33,6 +33,7 @@ class DeviceController extends Controller
                     'sold_date'    => $device->sold_date,
                     'created_at'   => $device->created_at,
                     'updated_at'   => $device->updated_at,
+                    'region_code' => $device->region_code,
                     'office_name'  => $device->office ? $device->office->region : null,
                     'employee_name' => $device->employee ? $device->employee->name : null,
                     'batch_id'     => $device->batch_id,
@@ -46,6 +47,15 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
+
+    public function getDevicesByRegion(Request $request)
+    {
+        $regionCode = $request->input('region_code'); // Get from form-data
+        $devices = Device::where('region_code', $regionCode)->get();
+
+        return response()->json(['devices' => $devices]);
+    }
+
 
     public function show($id)
     {
@@ -66,20 +76,20 @@ class DeviceController extends Controller
         try {
             // Validate the incoming request
             $validated = $this->validateDevice($request);
-    
+
             // Generate or find the current batch based on today's date
             $today = now()->format('Y-m-d');
             $batch = Batch::firstOrCreate(
-                ['batch_date' => $today], 
+                ['batch_date' => $today],
                 ['batch_id' => 'BAT-' . $today, 'description' => 'Auto-generated batch']
             );
-    
+
             // Add the batch_id (string) to the validated data for creating the device
             $validated['batch_id'] = $batch->batch_id;
-    
+
             // Create the device and assign the batch_id as a string
             $device = Device::create($validated);
-    
+
             // Return a success response
             return $this->successResponse('Device added successfully', ['device' => $device], 201);
         } catch (ValidationException $e) {
@@ -90,17 +100,17 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
-    
+
     public function update(Request $request, $id)
     {
         try {
             $validated = $this->validateDevice($request, $id);
             $device = Device::findOrFail($id);
-    
+
             // Explicitly set nullable fields
             $device->fill($validated);
-            $device->save(); 
-    
+            $device->save();
+
             return $this->successResponse('Device updated successfully', ['device' => $device]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
@@ -112,46 +122,46 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
-    
-//     public function update(Request $request, $id)
-// {
-//     try {
-//         $validated = $this->validateDevice($request, $id);
-//         $device = Device::findOrFail($id);
 
-//         // If batch ID needs to be updated, generate or find a batch
-//         if ($request->has('batch_id')) {
-//             // Retrieve or create a batch based on today's date and store the batch_id as a string
-//             // $today = now()->format('Y-m-d');
-//             // $batch = Batch::firstOrCreate(
-//             //     ['batch_date' => $today],
-//             //     ['batch_id' => 'BAT-' . $today, 'description' => 'Auto-generated batch']
-//             // );
+    //     public function update(Request $request, $id)
+    // {
+    //     try {
+    //         $validated = $this->validateDevice($request, $id);
+    //         $device = Device::findOrFail($id);
 
-//             // Use the batch_id as a string instead of the batch's integer id
-//             // $validated['batch_id'] = $batch->batch_id;  // Store the batch_id as a string
-//         }
+    //         // If batch ID needs to be updated, generate or find a batch
+    //         if ($request->has('batch_id')) {
+    //             // Retrieve or create a batch based on today's date and store the batch_id as a string
+    //             // $today = now()->format('Y-m-d');
+    //             // $batch = Batch::firstOrCreate(
+    //             //     ['batch_date' => $today],
+    //             //     ['batch_id' => 'BAT-' . $today, 'description' => 'Auto-generated batch']
+    //             // );
 
-//         // // Explicitly assign price if present
-//         // if ($request->has('price')) {
-//         //     $device->price = $request->input('price');
-//         // }
+    //             // Use the batch_id as a string instead of the batch's integer id
+    //             // $validated['batch_id'] = $batch->batch_id;  // Store the batch_id as a string
+    //         }
 
-//         // Update the device with validated data
-//         $device->fill($validated);
-//         $device->save();
+    //         // // Explicitly assign price if present
+    //         // if ($request->has('price')) {
+    //         //     $device->price = $request->input('price');
+    //         // }
 
-//         return $this->successResponse('Device updated successfully', ['device' => $device]);
-//     } catch (ValidationException $e) {
-//         return $this->validationErrorResponse($e);
-//     } catch (ModelNotFoundException $e) {
-//         return $this->notFoundResponse('Device not found', $id);
-//     } catch (QueryException $e) {
-//         return $this->databaseErrorResponse($e);
-//     } catch (\Exception $e) {
-//         return $this->unexpectedErrorResponse($e);
-//     }
-// }
+    //         // Update the device with validated data
+    //         $device->fill($validated);
+    //         $device->save();
+
+    //         return $this->successResponse('Device updated successfully', ['device' => $device]);
+    //     } catch (ValidationException $e) {
+    //         return $this->validationErrorResponse($e);
+    //     } catch (ModelNotFoundException $e) {
+    //         return $this->notFoundResponse('Device not found', $id);
+    //     } catch (QueryException $e) {
+    //         return $this->databaseErrorResponse($e);
+    //     } catch (\Exception $e) {
+    //         return $this->unexpectedErrorResponse($e);
+    //     }
+    // }
 
 
     public function destroy($id)
@@ -173,44 +183,44 @@ class DeviceController extends Controller
     {
         try {
             Log::info('Import process started');
-    
+
             // Validate the file
             $request->validate([
                 'excel_file' => 'required|mimes:xlsx,xls,csv|max:2048',
             ]);
-    
+
             // Store the uploaded file
             $file = $request->file('excel_file');
             $path = $file->storeAs('imports', 'devices_import.xlsx'); // Saves file in storage/app/imports/
-    
+
             Log::info('File uploaded successfully', [
                 'path' => $path,
                 'original_name' => $file->getClientOriginalName()
             ]);
-    
+
             // Ensure file exists
             if (!Storage::disk('local')->exists('imports/devices_import.xlsx')) {
                 Log::error('File not found in storage', ['path' => $path]);
                 return response()->json(['success' => false, 'message' => 'File upload failed.'], 400);
             }
-    
+
             // Get the absolute path
             $filePath = Storage::path($path);
-    
+
             Log::info('Importing file from', ['filePath' => $filePath]);
-    
+
             // Import Excel
             Excel::import(new DevicesImport, $filePath);
-    
+
             Log::info('Import process completed successfully');
-    
+
             return response()->json(['success' => true, 'message' => 'Devices imported successfully!']);
         } catch (\Exception $e) {
             Log::error('Import failed', ['error' => $e->getMessage()]);
             return response()->json(['success' => false, 'message' => 'Failed to import data: ' . $e->getMessage()], 500);
         }
     }
-    
+
 
     // =========================== HELPER METHODS ===========================
 

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::apiResource('devices', DeviceController::class);
+Route::get('/devicesByregionCode', [DeviceController::class, 'getDevicesByRegion']);
 
 // Protect routes with the custom JWT middleware
 Route::middleware('jwt.auth')->group(function () {
@@ -33,7 +35,7 @@ Route::middleware('jwt.auth')->group(function () {
 
 
     Route::apiResource('users', UserController::class);
-    Route::apiResource('devices', DeviceController::class);
+    // Route::apiResource('devices', DeviceController::class);
     Route::apiResource('devices_issues', DeviceEssueController::class);
     Route::apiResource('officies', OfficeController::class);
     Route::apiResource('transactions', TransactionController::class);

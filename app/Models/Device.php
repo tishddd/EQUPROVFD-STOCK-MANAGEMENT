@@ -14,6 +14,7 @@ class Device extends Model
         'model_number',
         'serial_number',
         'status',
+        'region_code',
         'office_id',
         'employee_id',
         'price',

@@ -36,6 +36,7 @@ class DevicesImport implements ToModel, WithHeadingRow
                 'model_number'  => $row['model_number'] ?? null,
                 'serial_number' => $row['serial_number'] ?? null,
                 'status'        => $row['status'] ?? 'in_office',
+                'region_code'  => $row['region_code'] ?? null,
                 'office_id'     => isset($row['office_id']) ? (int) $row['office_id'] : 6,
                 'employee_id'   => isset($row['employee_id']) ? (int) $row['employee_id'] : null,
                 'price'         => isset($row['price']) ? (float) str_replace(',', '', $row['price']) : 0.0,

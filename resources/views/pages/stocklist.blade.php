@@ -34,7 +34,7 @@
         <main class="main flex-grow-1">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb rounded-0 bg-white border-bottom m-0">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Library</a></li>
                     <li class="breadcrumb-item active" class="-block dark text-white p-2" aria-current="page">BAT-2025-02-08|001</li>
                 </ol>
