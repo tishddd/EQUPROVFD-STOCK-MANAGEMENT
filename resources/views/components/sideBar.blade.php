@@ -89,11 +89,11 @@
 
 
             <!-- Settings -->
-            <li class="mt-2">
+            <!-- <li class="mt-2">
                 <a href="#" class="text-white d-flex align-items-center py-2 rounded">
                     <span class="mdi mdi-cog mdi-24px text-light mr-2"></span> Settings
                 </a>
-            </li>
+            </li> -->
 
 
         </ul>

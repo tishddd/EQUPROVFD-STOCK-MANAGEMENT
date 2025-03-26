@@ -100,28 +100,31 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
-
-    public function update(Request $request, $id)
+    public function update(Request $request, $serial_number)
     {
         try {
-            $validated = $this->validateDevice($request, $id);
-            $device = Device::findOrFail($id);
-
-            // Explicitly set nullable fields
+            // ✅ Validate Request
+            $validated = $this->validateDevice($request, $serial_number);
+    
+            // ✅ Find Device by serial_id
+            $device = Device::where('serial_number', $serial_number)->firstOrFail();
+    
+            // ✅ Update Device Data
             $device->fill($validated);
             $device->save();
-
+    
             return $this->successResponse('Device updated successfully', ['device' => $device]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
         } catch (ModelNotFoundException $e) {
-            return $this->notFoundResponse('Device not found', $id);
+            return $this->notFoundResponse('Device not found', $serial_number);
         } catch (QueryException $e) {
             return $this->databaseErrorResponse($e);
         } catch (\Exception $e) {
             return $this->unexpectedErrorResponse($e);
         }
     }
+    
 
     //     public function update(Request $request, $id)
     // {

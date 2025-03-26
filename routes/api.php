@@ -10,6 +10,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\DeviceTransferController;
+use App\Http\Controllers\UserCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -35,6 +36,7 @@ Route::middleware('jwt.auth')->group(function () {
 
 
     Route::apiResource('users', UserController::class);
+    Route::apiResource('userCategory', UserCategoryController::class);
     // Route::apiResource('devices', DeviceController::class);
     Route::apiResource('devices_issues', DeviceEssueController::class);
     Route::apiResource('officies', OfficeController::class);

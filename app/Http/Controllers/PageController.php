@@ -41,4 +41,8 @@ class PageController extends Controller
         return view('pages.transferPage');
     }
 
+    public function getUsers()
+    {
+        return view('pages.users.getusersPage');
+    }
 }

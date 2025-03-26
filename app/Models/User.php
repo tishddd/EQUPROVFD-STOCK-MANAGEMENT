@@ -19,9 +19,11 @@ class User extends Authenticatable implements JWTSubject
      * @var list<string>
      */
     protected $fillable = [
+        'user_code',
         'name',
         'email',
         'password',
+        'category_id',  // Added category_id for foreign key relationship
     ];
 
     /**
@@ -65,5 +67,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Define the relationship with the UserCategory model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(UserCategory::class, 'category_id');  // Establishing foreign key relationship
     }
 }

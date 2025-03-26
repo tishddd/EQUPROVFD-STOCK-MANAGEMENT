@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -68,20 +69,56 @@ class UserController extends Controller
     // HELPER METHODS
     // ===========================
 
+
     private function validateDevice(Request $request, $id = null)
     {
-        return $request->validate([
-            'name' => 'sometimes|string|max:255|bail',
+        Log::info("Validating device data", ['request_data' => $request->all(), 'user_id' => $id]);
+
+        $rules = [
+            'user_code' => 'required|integer',
+            'name' => 'required|string|max:255',
             'email' => [
-                'sometimes', 'email', 'max:255',
+                'required',
+                'email',
+                'max:255',
                 'unique:users,email,' . $id
             ],
-            'email_verified_at' => 'nullable|date',
-            'password' => 'nullable|string|min:8|confirmed',
-            'remember_token' => 'nullable|string|max:100',
-        ]);
+            'password' => 'required|string|min:8',
+        ];
+
+        if ($id) { // For update, password might be optional
+            $rules['password'] = 'nullable|string|min:8';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        Log::info("Validation successful", ['validated_data' => $validatedData]);
+
+        return $validatedData;
     }
-    
+
+    // private function validateDevice(Request $request, $id = null)
+    // {
+    //     Log::info("Validating device data", ['request_data' => $request->all(), 'user_id' => $id]);
+
+    //     $validatedData = $request->validate([
+    //         'user_code' => 'sometimes|int|',
+    //         'name' => 'sometimes|string|max:255|bail',
+    //         'email' => [
+    //             'sometimes', 'email', 'max:255',
+    //             'unique:users,email,' . $id
+    //         ],
+    //         'email_verified_at' => 'nullable|date',
+    //         'password' => 'nullable|string|min:8|',
+    //         'remember_token' => 'nullable|string|max:100',
+    //     ]);
+
+    //     Log::info("Validation successful", ['validated_data' => $validatedData]);
+
+    //     return $validatedData;
+    // }
+
+
     private function successResponse($message, $data = [], $status = 200)
     {
         return response()->json(compact('message') + $data, $status);
@@ -91,16 +128,20 @@ class UserController extends Controller
     {
         return match (true) {
             $e instanceof ValidationException => response()->json([
-                'error' => 'Validation failed', 'messages' => $e->errors()
+                'error' => 'Validation failed',
+                'messages' => $e->errors()
             ], 422),
             $e instanceof ModelNotFoundException => response()->json([
-                'error' => 'Not Found', 'message' => "No user found with ID: $id"
+                'error' => 'Not Found',
+                'message' => "No user found with ID: $id"
             ], 404),
             $e instanceof QueryException => response()->json([
-                'error' => 'Database error', 'message' => $e->getMessage()
+                'error' => 'Database error',
+                'message' => $e->getMessage()
             ], 500),
             default => response()->json([
-                'error' => 'Unexpected error', 'message' => $e->getMessage()
+                'error' => 'Unexpected error',
+                'message' => $e->getMessage()
             ], 500),
         };
     }
