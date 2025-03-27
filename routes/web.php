@@ -17,4 +17,5 @@ Route::get('/transfers', [PageController::class, 'stockTransfer'])->name('stockT
 Route::get('/returns', [PageController::class, 'stockReturns'])->name('returns');
 Route::get('/revenue-report', [PageController::class, 'revenueReport'])->name('revenue-report');
 Route::get('/users', [PageController::class, 'getUsers'])->name('getUsers');
+Route::get('/office', [PageController::class, 'getOffice'])->name('getOffice');
 

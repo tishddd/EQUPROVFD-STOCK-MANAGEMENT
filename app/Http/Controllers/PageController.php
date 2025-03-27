@@ -45,4 +45,10 @@ class PageController extends Controller
     {
         return view('pages.users.getusersPage');
     }
+
+    public function getOffice()
+    {
+      //  return view('pages.users.getusersPage');
+         return view('pages.office.getOfficePage');
+    }
 }

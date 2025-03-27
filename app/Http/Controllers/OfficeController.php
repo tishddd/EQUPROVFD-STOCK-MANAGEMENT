@@ -95,6 +95,7 @@ class OfficeController extends Controller
         return $request->validate([
             'name' => 'sometimes|string|max:255',
             'region' => 'sometimes|string|max:255',
+            'region_code' => 'sometimes|string|max:255',
         ]);
     }
     

@@ -12,6 +12,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/admindashbordAssets/css/style.css')}}">
 
+    <!-- Bootstrap CSS (if not already included) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
@@ -43,17 +46,20 @@
                         <!-- Transfer Form -->
                         <div class="card p-4 mb-2">
                             <form id="transferForm">
-                                <div class="mb-3">
-                                    <label for="device_id" class="form-label">Select Device</label>
-                                    <select class="form-select" id="device_id" required></select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="device_id" class="form-label">Select Device</label>
+                                        <select class="form-select" id="device_id" required></select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="region_id" class="form-label">Select Region</label>
+                                        <select class="form-select" id="region_id" required></select>
+                                    </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="region_id" class="form-label">Select Region</label>
-                                    <select class="form-select" id="region_id" required></select>
-                                </div>
 
-                                <button type="submit" class="btn btn-primary">Transfer Device</button>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Transfer Device</button>
                             </form>
                         </div>
 

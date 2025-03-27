@@ -13,6 +13,9 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/admindashbordAssets/css/style.css')}}">
 
+       <!-- Bootstrap CSS (if not already included) -->
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
@@ -103,7 +106,7 @@
         <!-- <========side bar end ======> -->
 
         <main class="main flex-grow-1">
-            <nav aria-label="breadcrumb">
+            <nav style="margin-left: 12px;" aria-label="breadcrumb">
                 <ol class="breadcrumb rounded-0 bg-white border-bottom m-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Library</a></li>

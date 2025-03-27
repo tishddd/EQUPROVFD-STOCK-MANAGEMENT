@@ -12,6 +12,7 @@ class Office extends Model
     protected $fillable = [
         'name',
         'region',
+        'region_code',
     ];
 
     /**
