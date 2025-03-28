@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DevicesImport;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\DevicesExport;
+
 
 class DeviceController extends Controller
 {
@@ -125,6 +127,7 @@ class DeviceController extends Controller
         }
     }
     
+  
 
     //     public function update(Request $request, $id)
     // {
@@ -224,6 +227,11 @@ class DeviceController extends Controller
         }
     }
 
+
+    public function exportDevices()
+    {
+        return Excel::download(new DevicesExport, 'devices_report.xlsx');
+    }
 
     // =========================== HELPER METHODS ===========================
 

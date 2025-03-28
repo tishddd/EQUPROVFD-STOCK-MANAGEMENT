@@ -28,6 +28,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/office-device-counts', [DashboardController::class, 'getOfficeDeviceCounts']);
     Route::get('/total-device-counts', [DashboardController::class, 'getTotalDeviceCounts']);
     Route::post('/import-excel', [DeviceController::class, 'importExcel']);
+    Route::get('/export-devices', [DashboardController::class, 'exportDevices']);
     Route::get('/getStock/{batch_id}', [StockController::class, 'getStockByBatch'])->name('getStock');
     Route::get('/stats/{batch_id}', [StockController::class, 'stats']);
     Route::post('/transfer-device', [DeviceTransferController::class, 'transferDevice']);

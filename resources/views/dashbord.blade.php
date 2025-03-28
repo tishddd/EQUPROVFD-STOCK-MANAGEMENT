@@ -13,8 +13,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/admindashbordAssets/css/style.css')}}">
 
-       <!-- Bootstrap CSS (if not already included) -->
-       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS (if not already included) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -122,9 +122,10 @@
 
                     <!-- Add Device Button & Table -->
                     <div class="d-flex justify-content-between mb-2" style="margin-top: 20px;">
-                        <button id="addDeviceBtn" class="btn btn-info text-white">
+                        <button id="exportExcel" class="btn btn-info text-white">Export to Excel</button>
+                        <!-- <button id="addDeviceBtn" class="btn btn-info text-white">
                             ➕ Add New Device
-                        </button>
+                        </button> -->
                     </div>
 
 
@@ -422,7 +423,7 @@
                             });
 
                             // Move the "Add Device" button before the search box
-                            $(".dataTables_filter").before($("#addDeviceBtn"));
+                            $(".dataTables_filter").before($("#exportExcel"));
                         } else {
                             let dataTable = $("#dataTable").DataTable();
                             let currentPage = dataTable.page(); // ✅ Store current page
@@ -690,7 +691,53 @@
     <!-- ========================end dashbord stats ============================== -->
 
 
-    <!-- ==========================upload excel ============================ -->
+    <!-- ==========================Export excel ============================ -->
+    <!-- <script>
+        document.getElementById("exportExcel").addEventListener("click", function() {
+            window.location.href = "http://127.0.0.1:8000/api/export-devices";
+        });
+    </script> -->
+    <script>
+        document.getElementById("exportExcel").addEventListener("click", function() {
+            let token = localStorage.getItem('jwt_token'); // Retrieve JWT token
+            if (!token) {
+                console.log("Token not found, redirecting to login...");
+                window.location.href = "/login"; // Redirect if no token
+                return;
+            }
+
+            fetch("http://127.0.0.1:8000/api/export-devices", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob(); // Convert response to blob for download
+                    } else if (response.status === 401) {
+                        console.log("Token expired, redirecting to login...");
+                        localStorage.removeItem('jwt_token');
+                        window.location.href = "/login";
+                    } else {
+                        console.error("Unexpected response:", response.status);
+                    }
+                })
+                .then(blob => {
+                    if (blob) {
+                        let url = window.URL.createObjectURL(blob);
+                        let a = document.createElement("a");
+                        a.href = url;
+                        a.download = "exported_devices.xlsx"; // Set download filename
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+
 
 
 

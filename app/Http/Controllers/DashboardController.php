@@ -7,6 +7,9 @@ use App\Models\Device;
 use App\Models\Transaction;
 use App\Models\DeviceIssue;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DevicesExport;
 
 class DashboardController extends Controller
 {
@@ -146,6 +149,11 @@ public function getTotalDeviceCounts()
 }
 
 
+
+public function exportDevices()
+{
+    return Excel::download(new DevicesExport, 'exported_devices.xlsx');
+}
 
 
 }
