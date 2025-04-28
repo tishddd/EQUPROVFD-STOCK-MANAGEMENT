@@ -401,7 +401,7 @@
                         <td class="align-middle">${device.sold_price || '-'}</td>
                         <td class="align-middle">${device.region_code}</td>
                         <td class="align-middle">${device.office_name}</td>
-                        <td class="align-middle">${device.employee_name}</td>
+                        <td class="align-middle">${device.employee_name }</td>
                         <td class="align-middle">${device.customer_tin || '-'}</td>
                         <td class="align-middle">${formatDate(device.sold_date)}</td>
                     </tr>`;

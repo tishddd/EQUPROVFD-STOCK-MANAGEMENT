@@ -17,6 +17,7 @@ class Device extends Model
         'region_code',
         'office_id',
         'employee_id',
+        'user_code',
         'price',
         'sold_price',
         'customer_tin',

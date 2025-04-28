@@ -25,7 +25,7 @@
 
 <div class="sidebar bg-dark open p-4 text-white d-flex flex-column justify-content-between shadow-lg" style="width: 260px; min-height: 90vh; transition: all 0.3s ease;">
     <div>
-    <h5 class="text-uppercase text-white font-weight-bold">Dashboard</h5>
+        <h5 class="text-uppercase text-white font-weight-bold">Dashboard</h5>
         <ul class="list-unstyled mt-4">
             <!-- View Stock -->
             <li>
@@ -77,11 +77,13 @@
             </li>
 
             <!-- Transactions -->
+            <!-- Transactions -->
             <li class="mt-2">
-                <a class="d-flex align-items-center text-white py-2 rounded" href="#">
+                <a class="d-flex align-items-center text-white py-2 rounded" href="{{ route('stockTransaction') }}">
                     <span class="mdi mdi-swap-horizontal mdi-24px text-success mr-2"></span> Transaction
                 </a>
             </li>
+
 
             <!-- Revenue Report -->
             <li class="mt-2">

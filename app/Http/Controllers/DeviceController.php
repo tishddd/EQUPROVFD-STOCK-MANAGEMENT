@@ -13,6 +13,8 @@ use App\Imports\DevicesImport;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\DevicesExport;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class DeviceController extends Controller
@@ -22,23 +24,31 @@ class DeviceController extends Controller
     public function index()
     {
         try {
-            $devices = Device::with(['office', 'employee', 'batch'])->get()->map(function ($device) {
+            $devices = Device::with(['office', 'batch'])->get()->map(function ($device) {
+                // Fetch the employee's name using the user_code from the users table
+                $employeeName = null;
+                if ($device->user_code) {
+                    $employee = DB::table('users')->where('user_code', $device->user_code)->first();
+                    $employeeName = $employee ? $employee->name : null; // Fetch the name field from the users table
+                }
+
                 return [
-                    'id'           => $device->id,
-                    'item_name'    => $device->item_name,
-                    'model_number' => $device->model_number,
+                    'id'            => $device->id,
+                    'item_name'     => $device->item_name,
+                    'model_number'  => $device->model_number,
                     'serial_number' => $device->serial_number,
-                    'status'       => $device->status,
-                    'price'        => $device->price,
-                    'sold_price'   => $device->sold_price,
-                    'customer_tin' => $device->customer_tin,
-                    'sold_date'    => $device->sold_date,
-                    'created_at'   => $device->created_at,
-                    'updated_at'   => $device->updated_at,
-                    'region_code' => $device->region_code,
-                    'office_name'  => $device->office ? $device->office->region : null,
-                    'employee_name' => $device->employee ? $device->employee->name : null,
-                    'batch_id'     => $device->batch_id,
+                    'status'        => $device->status,
+                    'price'         => $device->price,
+                    'sold_price'    => $device->sold_price,
+                    'customer_tin'  => $device->customer_tin,
+                    'sold_date'     => $device->sold_date,
+                    'created_at'    => $device->created_at,
+                    'updated_at'    => $device->updated_at,
+                    'region_code'   => $device->region_code,
+                    'office_name'   => $device->office ? $device->office->region : null,
+                    'employee_name' => $employeeName,  // Set employee name based on user_code
+                    'user_code'     => $device->user_code,
+                    'batch_id'      => $device->batch_id,
                 ];
             });
 
@@ -49,6 +59,8 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
+
+
 
     public function getDevicesByRegion(Request $request)
     {
@@ -102,19 +114,20 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
+
     public function update(Request $request, $serial_number)
     {
         try {
             // ✅ Validate Request
             $validated = $this->validateDevice($request, $serial_number);
-    
+
             // ✅ Find Device by serial_id
             $device = Device::where('serial_number', $serial_number)->firstOrFail();
-    
+
             // ✅ Update Device Data
             $device->fill($validated);
             $device->save();
-    
+
             return $this->successResponse('Device updated successfully', ['device' => $device]);
         } catch (ValidationException $e) {
             return $this->validationErrorResponse($e);
@@ -126,8 +139,8 @@ class DeviceController extends Controller
             return $this->unexpectedErrorResponse($e);
         }
     }
-    
-  
+
+
 
     //     public function update(Request $request, $id)
     // {
@@ -230,7 +243,7 @@ class DeviceController extends Controller
 
     public function exportDevices()
     {
-        return Excel::download(new DevicesExport, 'devices_report.xlsx');
+        return Excel::download(new DevicesExport(), 'devices_report_'.now()->format('Y-m-d').'.xlsx');
     }
 
     // =========================== HELPER METHODS ===========================
@@ -244,6 +257,7 @@ class DeviceController extends Controller
             'status'         => 'sometimes|in:in_office,sold,damaged',
             'office_id'      => 'nullable|exists:offices,id',
             'employee_id'    => 'nullable|exists:users,id',
+            'user_code' => 'nullable',
             'price'          => 'sometimes|numeric|min:0',
             'sold_price'     => 'nullable|numeric|min:0',
             'customer_tin'   => 'nullable|string|max:20',

@@ -51,4 +51,10 @@ class PageController extends Controller
       //  return view('pages.users.getusersPage');
          return view('pages.office.getOfficePage');
     }
+
+    public function stockTransaction()
+    {
+      //  return view('pages.users.getusersPage');
+         return view('pages.transaction.makeTransaction');
+    }
 }
