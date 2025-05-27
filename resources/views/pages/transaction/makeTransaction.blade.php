@@ -75,7 +75,7 @@
                                         <!-- Second Row - TIN and Status -->
                                         <!-- Add this field to your form -->
                                         <div class="col-md-4">
-                                            <label for="soldPrice" class="form-label fw-semibold text-secondary">Sale Price</label>
+                                            <!-- <label for="soldPrice" class="form-label fw-semibold text-secondary">Sale Price</label> -->
                                             <input type="number" step="0.01" class="form-control" id="soldPrice" placeholder="0.00">
                                         </div>
 

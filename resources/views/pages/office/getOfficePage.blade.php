@@ -374,7 +374,7 @@
             }
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/office-device-counts",
+                url: "api/office-device-counts",
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -403,7 +403,7 @@
             });
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/total-device-counts",
+                url: "api/total-device-counts",
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -477,7 +477,7 @@
             };
 
             // Make the logout request
-            fetch('http://127.0.0.1:8000/api/logout', {
+            fetch('api/logout', {
                     method: 'POST',
                     headers: headers,
                 })
