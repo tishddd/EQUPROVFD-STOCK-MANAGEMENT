@@ -1075,7 +1075,11 @@
             // Check if all required fields are filled
             if (user_code && name && email && password) {
                 $.ajax({
+<<<<<<< HEAD
                     url: 'api/users/', // API endpoint for users
+=======
+                    url: 'http://127.0.0.1:8000/api/users/', // API endpoint for users
+>>>>>>> 8e66568546a1fcac80bb09846fb7598a65824f5f
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -1120,7 +1124,11 @@
             // Check if category name is filled
             if (categoryName) {
                 $.ajax({
+<<<<<<< HEAD
                     url: 'api/userCategory', // API endpoint for user categories
+=======
+                    url: 'http://127.0.0.1:8000/api/userCategory', // API endpoint for user categories
+>>>>>>> 8e66568546a1fcac80bb09846fb7598a65824f5f
                     type: 'POST',
                     dataType: 'json',
                     data: {

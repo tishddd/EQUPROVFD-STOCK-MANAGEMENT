@@ -154,7 +154,6 @@
                         </table>
                     </div>
 
-
                     <!-- Add Device Modal -->
                     <div class="modal fade" id="addDeviceModal" tabindex="-1" aria-labelledby="addDeviceModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
