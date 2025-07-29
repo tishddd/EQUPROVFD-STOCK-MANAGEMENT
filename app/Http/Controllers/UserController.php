@@ -34,7 +34,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $this->validateDevice($request);
+            $validated = $this->validateUser($request);
             $user = User::create($validated);
             return $this->successResponse('User added successfully', ['user' => $user], 201);
         } catch (\Throwable $e) {
@@ -45,7 +45,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $validated = $this->validateDevice($request, $id);
+            $validated = $this->validateUser($request, $id);
             $user = User::findOrFail($id);
             $user->update($validated);
             return $this->successResponse('User updated successfully', ['user' => $user]);
@@ -70,7 +70,7 @@ class UserController extends Controller
     // ===========================
 
 
-    private function validateDevice(Request $request, $id = null)
+    private function validateUser(Request $request, $id = null)
     {
         Log::info("Validating device data", ['request_data' => $request->all(), 'user_id' => $id]);
 
@@ -84,6 +84,7 @@ class UserController extends Controller
                 'unique:users,email,' . $id
             ],
             'password' => 'required|string|min:8',
+            'role' => 'required|in:admin,user,editor',
         ];
 
         if ($id) { // For update, password might be optional
@@ -96,28 +97,6 @@ class UserController extends Controller
 
         return $validatedData;
     }
-
-    // private function validateDevice(Request $request, $id = null)
-    // {
-    //     Log::info("Validating device data", ['request_data' => $request->all(), 'user_id' => $id]);
-
-    //     $validatedData = $request->validate([
-    //         'user_code' => 'sometimes|int|',
-    //         'name' => 'sometimes|string|max:255|bail',
-    //         'email' => [
-    //             'sometimes', 'email', 'max:255',
-    //             'unique:users,email,' . $id
-    //         ],
-    //         'email_verified_at' => 'nullable|date',
-    //         'password' => 'nullable|string|min:8|',
-    //         'remember_token' => 'nullable|string|max:100',
-    //     ]);
-
-    //     Log::info("Validation successful", ['validated_data' => $validatedData]);
-
-    //     return $validatedData;
-    // }
-
 
     private function successResponse($message, $data = [], $status = 200)
     {

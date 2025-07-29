@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'user_code',
         'name',
         'email',
+        'role',
         'password',
         'category_id',  // Added category_id for foreign key relationship
     ];

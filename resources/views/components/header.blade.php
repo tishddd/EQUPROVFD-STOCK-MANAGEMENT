@@ -8,10 +8,10 @@
             <a href="{{ route('dashboard') }}" class="px-3 text-dark font-weight-bold">Dashboard</a>
             <a href="{{ route('getUsers') }}" class="px-3 text-dark font-weight-bold">Users</a>
             <a href="{{ route('getOffice') }}" class="px-3 text-dark font-weight-bold">Offices</a>
-            <div id="adminLinks" style="display: none;">
+            <!-- <div id="adminLinks" style="display: none;">
                 <a href="{{ route('getUsers') }}" class="px-3 text-dark font-weight-bold">Users</a>
                 <a href="{{ route('getOffice') }}" class="px-3 text-dark font-weight-bold">Offices</a>
-            </div>
+            </div> -->
 
         </nav>
     </div>

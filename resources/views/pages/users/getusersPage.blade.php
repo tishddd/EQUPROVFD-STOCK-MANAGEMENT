@@ -74,6 +74,7 @@
                                         <th>User Code</th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Role</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
                                         <th class="text-center">Actions</th>
@@ -473,8 +474,9 @@
     <!-- ===================================================get all users =================================== -->
     <script>
         $(document).ready(function() {
-            let token = localStorage.getItem('jwt_token'); // Retrieve token
-            console.log("Retrieved Token: ", token); // Debugging Log
+            // Initialize constants and variables
+            const token = localStorage.getItem('jwt_token');
+            const BASE_API_URL = "api/users/";
 
             if (!token) {
                 console.warn("No token found. Redirecting to login...");
@@ -482,46 +484,22 @@
                 return;
             }
 
-            $('#userTable').DataTable({
+            // Common AJAX headers
+            const ajaxHeaders = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            // Initialize DataTable
+            const userTable = $('#userTable').DataTable({
                 processing: true,
                 serverSide: false,
                 ajax: {
-                    url: "api/users/",
+                    url: BASE_API_URL,
                     type: "GET",
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    dataSrc: function(json) {
-                        console.log("API Response: ", json);
-
-                        if (!json || typeof json !== 'object') {
-                            console.error("Invalid API response format.");
-                            return [];
-                        }
-
-                        if (!Array.isArray(json.users)) {
-                            console.error("Expected 'users' field to be an array. Found:", json);
-                            return [];
-                        }
-
-                        return json.users.map(user => {
-                            return {
-                                ...user,
-                                created_at: formatDate(user.created_at),
-                                updated_at: formatDate(user.updated_at)
-                            };
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error - Status:", status, "Error:", error);
-                        console.error("Response:", xhr.responseText);
-
-                        if (xhr.status === 401) {
-                            console.warn("Unauthorized access. Redirecting to login...");
-                            localStorage.removeItem('jwt_token');
-                            window.location.href = "/login";
-                        }
-                    }
+                    headers: ajaxHeaders,
+                    dataSrc: processUserData,
+                    error: handleAjaxError
                 },
                 columns: [{
                         data: 'id'
@@ -537,6 +515,9 @@
                         data: 'email'
                     },
                     {
+                        data: 'role'
+                    },
+                    {
                         data: 'created_at'
                     },
                     {
@@ -546,177 +527,189 @@
                         data: null,
                         render: function(data, type, row) {
                             return `
-                        <button class="btn btn-sm btn-primary update-btn" data-id="${row.id}">Update</button>
-                        <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">Delete</button>
+                        <button class="btn btn-sm btn-primary update-btn" data-id="${row.id}">
+                            <i class="fas fa-edit"></i> Update
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
                     `;
                         }
                     }
                 ]
             });
 
-            // Function to format date to DD/MM/YYYY
+            // Process user data from API response
+            function processUserData(json) {
+                if (!json?.users) {
+                    console.error("Invalid user data format", json);
+                    return [];
+                }
+                return json.users.map(user => ({
+                    ...user,
+                    created_at: formatDate(user.created_at),
+                    updated_at: formatDate(user.updated_at)
+                }));
+            }
+
+            // Format date to DD/MM/YYYY
             function formatDate(dateString) {
                 if (!dateString) return 'N/A';
-                let date = new Date(dateString);
-                let day = String(date.getDate()).padStart(2, '0');
-                let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                let year = date.getFullYear();
-                return `${day}/${month}/${year}`;
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-GB'); // DD/MM/YYYY format
             }
 
             // Handle Update Button Click
-            // Handle Update Button Click
             $('#userTable tbody').on('click', '.update-btn', function() {
-                let userId = $(this).data('id');
-                console.log("Update user:", userId);
+                const userId = $(this).data('id');
+                fetchUserDetails(userId);
+            });
 
-                // Fetch user details from API
+            // Fetch user details for editing
+            function fetchUserDetails(userId) {
                 $.ajax({
-                    url: `api/users/${userId}`,
+                    url: `${BASE_API_URL}${userId}`,
                     type: "GET",
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    success: function(response) {
-                        console.log("API Response:", response);
-
-                        // Extract user data from the nested 'user' property
-                        const user = response.user;
-
-                        if (!user) {
-                            console.error("User data not found in response");
+                    headers: ajaxHeaders,
+                    success: (response) => {
+                        if (!response?.user) {
+                            showResponseModal('Error', 'User data not found', false);
                             return;
                         }
-
-                        console.log("User Data to Populate:", {
-                            id: user.id,
-                            user_code: user.user_code,
-                            name: user.name,
-                            email: user.email,
-                            status: user.status,
-                            address: user.address,
-                            role: user.role
-                        });
-
-                        // Populate Modal Fields
-                        $('#userId').val(user.id || '');
-                        $('#userCode').val(user.user_code || 'N/A');
-                        $('#userName').val(user.name || '');
-                        $('#userEmail').val(user.email || '');
-                        $('#createdAt').val(formatDate(user.created_at) || 'N/A');
-                        $('#updatedAt').val(formatDate(user.updated_at) || 'N/A');
-                        $('#userStatus').val(user.status || 'active');
-                        $('#userAddress').val(user.address || '');
-                        $('#userRole').val(user.role || 'user');
-
-                        // Show Bootstrap Modal
-                        $('#updateModal').modal('show');
+                        populateUpdateModal(response.user);
                     },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching user:", error);
-                        console.error("Response:", xhr.responseText);
+                    error: handleAjaxError
+                });
+            }
 
-                        if (xhr.status === 401) {
-                            localStorage.removeItem('jwt_token');
-                            window.location.href = "/login";
+            // Populate update modal with user data
+            function populateUpdateModal(user) {
+                console.log('User role from API:', user.role); // Add this line
+
+                   // Special handling for select elements
+    const $roleField = $('#userRole');
+    const roleValue = (user.role || 'user').toLowerCase();
+    
+    // Check if the value exists in options
+    if ($roleField.find(`option[value="${roleValue}"]`).length) {
+        $roleField.val(roleValue).trigger('change');
+    } else {
+        console.warn(`Invalid role value: ${roleValue}, defaulting to 'user'`);
+        $roleField.val('user').trigger('change');
+    }
+                const fields = {
+                    '#userId': user.id,
+                    '#userCode': user.user_code || 'N/A',
+                    '#userName': user.name,
+                    '#userEmail': user.email,
+                    '#createdAt': formatDate(user.created_at),
+                    '#updatedAt': formatDate(user.updated_at),
+                    '#userStatus': user.status || 'active',
+                    '#userAddress': user.address || '',
+                    '#userRole': user.role || 'user'
+                };
+
+                Object.entries(fields).forEach(([selector, value]) => {
+                    const $field = $(selector);
+                    if ($field.is('select')) {
+                        $field.val(value).trigger('change');
+                    } else {
+                        $field.val(value);
+                        if (selector === '#createdAt' || selector === '#updatedAt') {
+                            $field.prop('disabled', true);
                         }
                     }
                 });
-            });
 
-            // Handle Save Changes
-            $('#saveUserChanges').on('click', function() {
-                let userId = $('#userId').val();
-                let updatedUser = {
+                $('#updateModal').modal('show');
+            }
+
+            // Handle Save Changes with validation
+            $('#saveUserChanges').on('click', debounce(function() {
+                const userId = $('#userId').val();
+                const updatedUser = {
                     user_code: $('#userCode').val(),
-                    name: $('#userName').val(),
-                    email: $('#userEmail').val(),
+                    name: $('#userName').val().trim(),
+                    email: $('#userEmail').val().trim(),
                     status: $('#userStatus').val(),
-                    address: $('#userAddress').val(),
+                    address: $('#userAddress').val().trim(),
                     role: $('#userRole').val()
                 };
 
-                $.ajax({
-                    url: `api/users/${userId}`,
-                    type: "PUT",
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    },
-                    data: JSON.stringify(updatedUser),
-                    success: function(response) {
-                        console.log("User updated successfully:", response);
-                        $('#updateModal').modal('hide'); // Close modal
-                        $('#userTable').DataTable().ajax.reload(); // Refresh table
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error updating user:", error);
-                    }
-                });
-            });
+                // Basic validation
+                if (!updatedUser.name || !updatedUser.email) {
+                    showResponseModal('Error', 'Name and Email are required fields', false);
+                    return;
+                }
 
-            // Handle Delete Button Click
+                if (!validateEmail(updatedUser.email)) {
+                    showResponseModal('Error', 'Please enter a valid email address', false);
+                    return;
+                }
+
+                updateUser(userId, updatedUser);
+            }, 500));
+
+            // Update user via API
+            function updateUser(userId, userData) {
+                $.ajax({
+                    url: `${BASE_API_URL}${userId}`,
+                    type: "PUT",
+                    headers: ajaxHeaders,
+                    data: JSON.stringify(userData),
+                    success: function(response) {
+                        $('#updateModal').modal('hide');
+                        userTable.ajax.reload(null, false);
+                        showResponseModal('Success', 'User updated successfully', true);
+                    },
+                    error: handleAjaxError
+                });
+            }
+
+            // Delete functionality
             $('#userTable tbody').on('click', '.delete-btn', function() {
-                let userId = $(this).data('id');
+                const userId = $(this).data('id');
                 $('#deleteUserId').val(userId);
                 $('#deleteModal').modal('show');
             });
 
-            // Confirm Delete
             $('#confirmDelete').on('click', function() {
-                let userId = $('#deleteUserId').val();
-
+                const userId = $('#deleteUserId').val();
                 $.ajax({
-                    url: `api/users/${userId}`,
+                    url: `${BASE_API_URL}${userId}`,
                     type: "DELETE",
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    success: function(response) {
+                    headers: ajaxHeaders,
+                    success: function() {
                         $('#deleteModal').modal('hide');
-                        $('#userTable').DataTable().ajax.reload();
+                        userTable.ajax.reload(null, false);
                         showResponseModal('Success', 'User deleted successfully', true);
                     },
-                    error: function(xhr) {
-                        handleAjaxError(xhr);
-                    }
+                    error: handleAjaxError
                 });
             });
 
-            // Enhanced showResponseModal function
-            function showResponseModal(title, message, isSuccess, redirectUrl = null) {
-                var modalHeader = $('#modalHeader');
-                var modalTitle = $('#modalTitle');
-                var modalBody = $('#modalBody');
+            // Helper functions
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
 
-                // Set modal styling based on success/error
-                if (isSuccess) {
-                    modalHeader.css('background-color', '#28a745'); // Green for success
-                    modalTitle.css('color', '#fff').text(title);
-                    modalBody.html(message).css('color', '#000');
-                } else {
-                    modalHeader.css('background-color', '#dc3545'); // Red for error
-                    modalTitle.css('color', '#fff').text(title);
-                    modalBody.html(message).css('color', '#000');
-                }
-
-                $('#responseModal').modal('show');
-
-                // Handle redirect if needed
-                if (redirectUrl) {
-                    $('#responseModal').on('hidden.bs.modal', function() {
-                        window.location.href = redirectUrl;
-                    });
-                }
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
             }
 
             // Centralized error handler
             function handleAjaxError(xhr) {
-                console.error("AJAX Error:", xhr.responseText);
-
                 let errorMsg = 'An error occurred';
+
                 try {
-                    const jsonResponse = JSON.parse(xhr.responseText);
+                    const response = xhr.responseJSON || JSON.parse(xhr.responseText);
 
                     if (xhr.status === 401) {
                         showResponseModal('Session Expired', 'Please login again', false, '/login');
@@ -724,24 +717,17 @@
                         return;
                     }
 
-                    if (xhr.status === 422 && jsonResponse.errors) {
-                        errorMsg = 'Validation errors:<ul>';
-                        for (const field in jsonResponse.errors) {
-                            jsonResponse.errors[field].forEach(error => {
-                                errorMsg += `<li>${error}</li>`;
-                            });
-                        }
-                        errorMsg += '</ul>';
+                    if (xhr.status === 422 && response.errors) {
+                        errorMsg = Object.values(response.errors).flat().join('<br>');
                     } else if (xhr.status === 500) {
-                        if (jsonResponse.message.includes('Duplicate entry')) {
-                            errorMsg = jsonResponse.message.includes('user_code') ?
+                        errorMsg = response.message || 'Server error occurred';
+                        if (errorMsg.includes('Duplicate entry')) {
+                            errorMsg = errorMsg.includes('user_code') ?
                                 'User code already exists' :
                                 'Email already exists';
-                        } else {
-                            errorMsg = 'Server error occurred';
                         }
                     } else {
-                        errorMsg = jsonResponse.message || jsonResponse.error || errorMsg;
+                        errorMsg = response.message || response.error || errorMsg;
                     }
                 } catch (e) {
                     errorMsg = xhr.responseText || errorMsg;
@@ -749,132 +735,28 @@
 
                 showResponseModal('Error', errorMsg, false);
             }
+
+            // Enhanced response modal
+            function showResponseModal(title, message, isSuccess, redirectUrl = null) {
+                const $modal = $('#responseModal');
+                const $header = $modal.find('.modal-header');
+                const $title = $modal.find('.modal-title');
+                const $body = $modal.find('.modal-body');
+
+                $header.removeClass('bg-danger bg-success')
+                    .addClass(isSuccess ? 'bg-success' : 'bg-danger');
+                $title.text(title).css('color', 'white');
+                $body.html(message);
+
+                $modal.modal('show');
+
+                if (redirectUrl) {
+                    $modal.on('hidden.bs.modal', () => {
+                        window.location.href = redirectUrl;
+                    });
+                }
+            }
         });
-        // $(document).ready(function() {
-        //     let token = localStorage.getItem('jwt_token'); // Retrieve token
-        //     console.log("Retrieved Token: ", token); // Debugging Log
-
-        //     if (!token) {
-        //         console.warn("No token found. Redirecting to login...");
-        //         window.location.href = "/login";
-        //         return;
-        //     }
-
-        //     $('#userTable').DataTable({
-        //         processing: true,
-        //         serverSide: false,
-        //         ajax: {
-        //             url: "api/users/",
-        //             type: "GET",
-        //             headers: {
-        //                 'Authorization': `Bearer ${token}`
-        //             },
-        //             dataSrc: function(json) {
-        //                 console.log("API Response: ", json); // Debugging log
-
-        //                 if (!json || typeof json !== 'object') {
-        //                     console.error("Invalid API response format.");
-        //                     return [];
-        //                 }
-
-        //                 if (!Array.isArray(json.users)) {
-        //                     console.error("Expected 'users' field to be an array. Found:", json);
-        //                     return [];
-        //                 }
-
-        //                 return json.users.map(user => {
-        //                     return {
-        //                         ...user,
-        //                         created_at: formatDate(user.created_at),
-        //                         updated_at: formatDate(user.updated_at)
-        //                     };
-        //                 });
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 console.error("AJAX Error - Status:", status, "Error:", error);
-        //                 console.error("Response:", xhr.responseText);
-
-        //                 if (xhr.status === 401) {
-        //                     console.warn("Unauthorized access. Redirecting to login...");
-        //                     localStorage.removeItem('jwt_token'); // Remove expired token
-        //                     window.location.href = "/login";
-        //                 }
-        //             }
-        //         },
-        //         columns: [{
-        //                 data: 'id'
-        //             },
-        //             {
-        //                 data: 'user_code',
-        //                 defaultContent: 'N/A'
-        //             },
-        //             {
-        //                 data: 'name'
-        //             },
-        //             {
-        //                 data: 'email'
-        //             },
-        //             {
-        //                 data: 'created_at'
-        //             },
-        //             {
-        //                 data: 'updated_at'
-        //             },
-        //             {
-        //                 data: null,
-        //                 render: function(data, type, row) {
-        //                     return `
-        //                     <button class="btn btn-sm btn-primary update-btn" data-id="${row.id}">Update</button>
-        //                     <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">Delete</button>
-        //                 `;
-        //                 }
-        //             }
-        //         ]
-        //     });
-
-        //     // Function to format date to DD/MM/YYYY
-        //     function formatDate(dateString) {
-        //         if (!dateString) return 'N/A';
-        //         let date = new Date(dateString);
-        //         let day = String(date.getDate()).padStart(2, '0');
-        //         let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        //         let year = date.getFullYear();
-        //         return `${day}/${month}/${year}`;
-        //     }
-
-        //     // Event delegation for Update button
-        //     $('#userTable tbody').on('click', '.update-btn', function() {
-        //         let userId = $(this).data('id');
-        //         console.log("Update user:", userId);
-
-        //         // Set user ID in modal
-        //         $('#modalUserId').text(userId);
-
-        //         // Show Bootstrap Modal
-        //         $('#updateModal').modal('show');
-        //     });
-
-        //     // Event delegation for Delete button
-        //     $('#userTable tbody').on('click', '.delete-btn', function() {
-        //         let userId = $(this).data('id');
-        //         if (confirm("Are you sure you want to delete this user?")) {
-        //             $.ajax({
-        //                 url: `api/users/${userId}`,
-        //                 type: "DELETE",
-        //                 headers: {
-        //                     'Authorization': `Bearer ${token}`
-        //                 },
-        //                 success: function(response) {
-        //                     console.log("User deleted successfully:", response);
-        //                     $('#userTable').DataTable().ajax.reload(); // Refresh table
-        //                 },
-        //                 error: function(xhr, status, error) {
-        //                     console.error("Error deleting user:", error);
-        //                 }
-        //             });
-        //         }
-        //     });
-        // });
     </script>
     <!-- =================================================end get all users ================================================== -->
 
@@ -1056,106 +938,9 @@
         });
     </script>
 
-    <!-- 
-    <script>
-        // Function to get the JWT token from localStorage
-        function getAuthToken() {
-            return localStorage.getItem('jwt_token'); // Retrieve JWT token from localStorage
-        }
-
-        // Submit New User Form via AJAX
-        // Submit New User Form via AJAX
-        $('#addNewUser').click(function() {
-            var user_code = $('#newUserCode').val(); // Get user code value
-            var name = $('#newUserName').val(); // Get user name value
-            var email = $('#newUserEmail').val(); // Get user email value
-            var password = $('#password').val(); // Get user password value
-            var token = getAuthToken(); // Get the token from localStorage
-
-            // Check if all required fields are filled
-            if (user_code && name && email && password) {
-                $.ajax({
-<<<<<<< HEAD
-                    url: 'api/users/', // API endpoint for users
-=======
-                    url: 'http://127.0.0.1:8000/api/users/', // API endpoint for users
->>>>>>> 8e66568546a1fcac80bb09846fb7598a65824f5f
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        user_code: user_code, // Send user_code from form input
-                        name: name, // Send name from form input
-                        email: email, // Send email from form input
-                        password: password, // Send password from form input
-                    },
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Add the token to headers
-                    },
-                    success: function(response) {
-                        console.log(response); // Log the response for debugging
-
-                        // Check for success response
-                        if (response.success) {
-                            alert('User added successfully!');
-                            $('#addNewUserModal').modal('hide');
-                            $('#addNewUserForm')[0].reset(); // Reset form after success
-                        } else {
-                            alert(' ' + (response.message || 'Unknown error'));
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Log full error response to inspect
-                        console.log(xhr.responseText);
-                        alert('An error occurred: ' + xhr.responseText); // Display error message
-                    }
-                });
-            } else {
-                alert('Please fill in all required fields.'); // Alert if any required fields are missing
-            }
-        });
 
 
-        // Submit New User Category Form via AJAX
-        $('#addNewCategory').click(function() {
-            var categoryName = $('#newCategoryName').val();
-            var categoryDescription = $('#newCategoryDescription').val();
-            var token = getAuthToken(); // Get the token from localStorage
 
-            // Check if category name is filled
-            if (categoryName) {
-                $.ajax({
-<<<<<<< HEAD
-                    url: 'api/userCategory', // API endpoint for user categories
-=======
-                    url: 'http://127.0.0.1:8000/api/userCategory', // API endpoint for user categories
->>>>>>> 8e66568546a1fcac80bb09846fb7598a65824f5f
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        name: categoryName,
-                        description: categoryDescription,
-                    },
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Add the token to headers
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Category added successfully!');
-                            $('#addNewCategoryModal').modal('hide');
-                            $('#addNewCategoryForm')[0].reset(); // Reset form after success
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('An error occurred: ' + error);
-                    }
-                });
-            } else {
-                alert('Please fill in the category name.');
-            }
-        });
-    </script> -->
 
 
 </body>

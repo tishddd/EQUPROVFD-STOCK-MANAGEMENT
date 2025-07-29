@@ -92,9 +92,7 @@
 
 
 
-            <!-- Transactions -->
-            <!-- Admin-only section -->
-            <div id="adminLinks" style="display: none;">
+            <div id="#">
                 <!-- Transactions -->
                 <li class="mt-2">
                     <a class="d-flex align-items-center text-white py-2 rounded" href="{{ route('stockTransaction') }}">
@@ -116,6 +114,32 @@
                     </a>
                 </li>
             </div>
+
+
+            <!-- Transactions -->
+            <!-- Admin-only section -->
+            <div id="adminLinks" style="display: none;">
+                <!-- Transactions -->
+                <!-- <li class="mt-2">
+                    <a class="d-flex align-items-center text-white py-2 rounded" href="{{ route('stockTransaction') }}">
+                        <span class="mdi mdi-swap-horizontal mdi-24px text-success mr-2"></span> Transaction
+                    </a>
+                </li> -->
+
+                <!-- Revenue Report -->
+                <!-- <li class="mt-2">
+                    <a href="#" class="text-white d-flex align-items-center py-2 rounded">
+                        <span class="mdi mdi-finance mdi-24px text-info mr-2"></span> Revenue Report
+                    </a>
+                </li> -->
+
+                <!-- Offices -->
+                <!-- <li class="mt-2">
+                    <a href="{{ route('getOffice') }}" class="text-white d-flex align-items-center py-2 rounded">
+                        <span class="bi bi-buildings-fill mdi-24px text-danger mr-2"></span> Offices
+                    </a>
+                </li>
+            </div> -->
 
         </ul>
     </div>
