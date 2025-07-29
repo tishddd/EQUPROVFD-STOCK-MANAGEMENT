@@ -163,7 +163,7 @@
                 }
 
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/batches",
+                    url: "api/batches",
                     type: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}` // Include JWT token in the request headers
@@ -216,7 +216,7 @@
             let token = localStorage.getItem('jwt_token');
 
             $.ajax({
-                url: `http://127.0.0.1:8000/api/batches/${batchId}`,
+                url: `api/batches/${batchId}`,
                 type: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -247,7 +247,7 @@
                 }
 
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/batches",
+                    url: "api/batches",
                     type: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}` // Include JWT token in the request headers
@@ -351,7 +351,7 @@
             }
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/office-device-counts",
+                url: "api/office-device-counts",
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -380,7 +380,7 @@
             });
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/total-device-counts",
+                url: "api/total-device-counts",
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
