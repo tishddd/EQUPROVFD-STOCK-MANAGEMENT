@@ -202,23 +202,15 @@
                                     <input type="email" id="password" class="form-control shadow-sm border-primary">
                                 </div>
 
-
-
-
-                                <!-- Address -->
-                                <!-- <div class="col-md-4">
-                                    <label class="form-label fw-bold">Address</label>
-                                    <input type="text" id="newUserAddress" class="form-control shadow-sm border-info">
-                                </div> -->
                                 <!-- Role -->
-                                <!-- <div class="col-md-4">
+                                <div class="col-md-4">
                                     <label class="form-label fw-bold">Role</label>
                                     <select id="newUserRole" class="form-select shadow-sm border-warning">
                                         <option value="admin">Admin</option>
                                         <option value="user">User</option>
                                         <option value="editor">Editor</option>
                                     </select>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -586,17 +578,17 @@
             function populateUpdateModal(user) {
                 console.log('User role from API:', user.role); // Add this line
 
-                   // Special handling for select elements
-    const $roleField = $('#userRole');
-    const roleValue = (user.role || 'user').toLowerCase();
-    
-    // Check if the value exists in options
-    if ($roleField.find(`option[value="${roleValue}"]`).length) {
-        $roleField.val(roleValue).trigger('change');
-    } else {
-        console.warn(`Invalid role value: ${roleValue}, defaulting to 'user'`);
-        $roleField.val('user').trigger('change');
-    }
+                // Special handling for select elements
+                const $roleField = $('#userRole');
+                const roleValue = (user.role || 'user').toLowerCase();
+
+                // Check if the value exists in options
+                if ($roleField.find(`option[value="${roleValue}"]`).length) {
+                    $roleField.val(roleValue).trigger('change');
+                } else {
+                    console.warn(`Invalid role value: ${roleValue}, defaulting to 'user'`);
+                    $roleField.val('user').trigger('change');
+                }
                 const fields = {
                     '#userId': user.id,
                     '#userCode': user.user_code || 'N/A',
@@ -796,6 +788,7 @@
             var name = $('#newUserName').val();
             var email = $('#newUserEmail').val();
             var password = $('#password').val();
+            var userRole = $('#newUserRole').val();
             var token = getAuthToken();
 
             if (user_code && name && email && password) {
@@ -808,6 +801,7 @@
                         name: name,
                         email: email,
                         password: password,
+                        role : userRole,
                     },
                     headers: {
                         'Authorization': `Bearer ${token}`,
