@@ -156,11 +156,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-<<<<<<< HEAD
                                         <label for="region_id" class="form-label">Select Region TEST</label>
-=======
-                                        <label for="region_id" class="form-label">Select Region</label>
->>>>>>> 8e66568546a1fcac80bb09846fb7598a65824f5f
                                         <select class="form-select" id="region_id" required></select>
                                     </div>
                                 </div>

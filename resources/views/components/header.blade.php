@@ -1,4 +1,3 @@
-
 <header id="mainHeader" class="d-flex align-items-center justify-content-between bg-white border-bottom shadow-sm fixed-top p-2">
     <div class="d-flex align-items-center">
         <!-- <a href="/" class="d-inline-block mx-3">
@@ -7,6 +6,8 @@
         <div class="mdi mdi-menu mdi-24px text-muted cursor-pointer" id="toggle-sidebar"></div>
         <nav class="mx-4 d-none d-lg-block">
             <a href="{{ route('dashboard') }}" class="px-3 text-dark font-weight-bold">Dashboard</a>
+            <a href="{{ route('getUsers') }}" class="px-3 text-dark font-weight-bold">Users</a>
+            <a href="{{ route('getOffice') }}" class="px-3 text-dark font-weight-bold">Offices</a>
             <div id="adminLinks" style="display: none;">
                 <a href="{{ route('getUsers') }}" class="px-3 text-dark font-weight-bold">Users</a>
                 <a href="{{ route('getOffice') }}" class="px-3 text-dark font-weight-bold">Offices</a>

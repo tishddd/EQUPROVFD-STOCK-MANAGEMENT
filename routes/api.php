@@ -21,6 +21,7 @@ Route::get('/devicesByregionCode', [DeviceController::class, 'getDevicesByRegion
 // reports
 Route::get('/export-batch-devices', [BatchDeviceExportController::class, 'export']);
 
+
 // Protect routes with the custom JWT middleware
 Route::middleware('jwt.auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -42,7 +43,7 @@ Route::middleware('jwt.auth')->group(function () {
     
     Route::apiResource('users', UserController::class);
     Route::apiResource('userCategory', UserCategoryController::class);
-    Route::apiResource('devices', DeviceController::class);
+   // Route::apiResource('devices', DeviceController::class);
     Route::apiResource('devices_issues', DeviceEssueController::class);
     Route::apiResource('officies', OfficeController::class);
     Route::apiResource('transactions', TransactionController::class);
